@@ -129,7 +129,7 @@ const NewArrivals = () => {
               </div>
               <div className="text-center">
                 <p>Loading new arrivals...</p>
-                <div className="loading-spinner"></div>
+                <div  className="loading-spinner"></div>
               </div>
             </div>
           </div>

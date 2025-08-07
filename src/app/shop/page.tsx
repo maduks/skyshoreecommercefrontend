@@ -9,6 +9,7 @@ import { addToCart } from '@/store/slices/cartSlice';
 import { addToWishlist } from '@/store/slices/wishlistSlice';
 import { addToCompare } from '@/store/slices/compareSlice';
 import { useScriptLoader } from '@/hooks/useScriptLoader';
+import ApiStatusIndicator from '@/components/ApiStatusIndicator';
 
 const ShopPage = () => {
   const dispatch = useAppDispatch();
@@ -138,14 +139,29 @@ const ShopPage = () => {
           <div className="row">
             <div className="col-12">
               <div className="error-content text-center">
-                <h3>Error loading products</h3>
+                <h3>⚠️ Server Error</h3>
                 <p>{error}</p>
-                <button onClick={() => {
-                  dispatch(fetchProducts());
-                  dispatch(fetchCategories());
-                }} className="btn btn-primary">
-                  Try Again
-                </button>
+                <div className="error-actions">
+                  <button 
+                    onClick={() => {
+                      dispatch(fetchProducts());
+                      dispatch(fetchCategories());
+                    }} 
+                    className="btn btn-primary"
+                    style={{ marginRight: '10px' }}
+                  >
+                    🔄 Try Again
+                  </button>
+                  <button 
+                    onClick={() => window.location.reload()} 
+                    className="btn btn-secondary"
+                  >
+                    🔄 Refresh Page
+                  </button>
+                </div>
+                <div className="error-info" style={{ marginTop: '20px', fontSize: '14px', color: '#666' }}>
+                  <p>If the problem persists, please check back later. The server may be experiencing high traffic.</p>
+                </div>
               </div>
             </div>
           </div>
@@ -156,6 +172,7 @@ const ShopPage = () => {
 
   return (
     <>
+      <ApiStatusIndicator />
       {/* Begin Uren's Breadcrumb Area */}
       <div className="breadcrumb-area">
         <div className="container">
@@ -308,7 +325,7 @@ const ShopPage = () => {
                                 alt={product.name}
                                 width={300}
                                 height={300}
-                                style={{ objectFit: 'cover' }}
+                                style={{ objectFit: 'contain' }}
                               />
                               <Image 
                                 className="secondary-img" 
@@ -316,7 +333,7 @@ const ShopPage = () => {
                                 alt={product.name}
                                 width={300}
                                 height={300}
-                                style={{ objectFit: 'cover' }}
+                                style={{ objectFit: 'contain' }}
                               />
                             </Link>
                             {product.newArrival && (
