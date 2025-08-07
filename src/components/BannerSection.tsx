@@ -12,10 +12,10 @@ const BannerSection = () => {
             <div className="banner-item img-hover_effect">
               <div className="banner-img-1"></div>
               <div className="banner-content">
-                <span className="offer">Get 20% off your order</span>
-                <h4>Car and Truck</h4>
-                <h3>Mercedes Benz</h3>
-                <p>Explore and immerse in exciting 360 content with Fulldive&apos;s all-in-one virtual reality platform</p>
+                <span className="offer">Protect Your Investment</span>
+                <h4>Luxury Car Engine Oil</h4>
+                <h3>SUV&apos;S</h3>
+                <p>Don&apos;t risk the performance of your luxury car with inferior oil. Ensure your engine runs smoothly and efficiently with our premium engine oil.</p>
                 <div className="uren-btn-ps_left">
                   <Link className="uren-btn" href="/shop">Shop Now</Link>
                 </div>
@@ -26,10 +26,10 @@ const BannerSection = () => {
             <div className="banner-item img-hover_effect">
               <div className="banner-img-1 banner-img-2"></div>
               <div className="banner-content">
-                <span className="offer">Save $120 when you buy</span>
-                <h4>Rotiform SFO</h4>
-                <h3>Custom Forged</h3>
-                <p>Explore and immerse in exciting 360 content with Fulldive&apos;s all-in-one virtual reality platform</p>
+                <span className="offer">Enhance Your Fleet&apos;s Performance</span>
+                <h4>Premium Diesel Engine Oil</h4>
+                <h3>Heavy Duty Excellence</h3>
+                <p>Ensure your trucks and heavy-duty vehicles operate at peak efficiency with our top-quality diesel engine oil, designed for durability and superior protection.</p>
                 <div className="uren-btn-ps_left">
                   <Link className="uren-btn" href="/shop">Shop Now</Link>
                 </div>

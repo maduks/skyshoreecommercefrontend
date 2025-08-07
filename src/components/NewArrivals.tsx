@@ -8,7 +8,8 @@ import { fetchProducts, Product } from '@/store/slices/productSlice';
 import { addToCart } from '@/store/slices/cartSlice';
 import { addToWishlist } from '@/store/slices/wishlistSlice';
 import { addToCompare } from '@/store/slices/compareSlice';
-import { useScriptLoader } from '@/hooks/useScriptLoader';
+import { useQuickView } from '@/components/QuickViewProvider';
+import { useNewArrivalsSlider } from '@/hooks/useNewArrivalsSlider';
 
 const NewArrivals = () => {
   const dispatch = useAppDispatch();
@@ -16,16 +17,7 @@ const NewArrivals = () => {
   const { items: cartItems } = useAppSelector((state: any) => state.cart);
   const { items: wishlistItems } = useAppSelector((state: any) => state.wishlist);
   const { items: compareItems } = useAppSelector((state: any) => state.compare);
-
-  // Load scripts for sliders
-  useScriptLoader({
-    onLoad: () => {
-      console.log('Scripts loaded successfully for NewArrivals component');
-    },
-    onError: (error) => {
-      console.error('Error loading scripts:', error);
-    }
-  });
+  const { openQuickView } = useQuickView();
   
 
   useEffect(() => {
@@ -116,6 +108,9 @@ const NewArrivals = () => {
   const newArrivalProducts = products.filter((product: Product) => 
     product.tags && product.tags.includes('new-arrival')
   );
+
+  // Use specific slider hook for NewArrivals
+  const { sliderInitialized } = useNewArrivalsSlider(newArrivalProducts);
 
   if (loading) {
     return (
@@ -240,7 +235,7 @@ const NewArrivals = () => {
                                 <i className="ion-bag"></i>
                               </a>
                             </li>
-                            <li style={{marginRight: '10px'}}>
+                            {/* <li style={{marginRight: '10px'}}>
                               <a 
                                 className={`uren-wishlist ${isInWishlist(product._id) ? 'added' : ''}`}
                                 onClick={(e) => {
@@ -267,9 +262,18 @@ const NewArrivals = () => {
                               >
                                 <i className="ion-android-options"></i>
                               </a>
-                            </li>
-                            <li className="quick-view-btn" data-toggle="modal" data-target="#exampleModalCenter">
-                              <a href="javascript:void(0)" data-toggle="tooltip" data-placement="top" title="Quick View">
+                            </li> */}
+                            <li className="quick-view-btn">
+                              <a 
+                                href="javascript:void(0)" 
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  openQuickView(product);
+                                }}
+                                data-toggle="tooltip" 
+                                data-placement="top" 
+                                title="Quick View"
+                              >
                                 <i className="ion-android-open"></i>
                               </a>
                             </li>

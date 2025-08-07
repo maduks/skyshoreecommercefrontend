@@ -1585,6 +1585,11 @@ button, .global-overlay, .quantity .cart-plus-minus > .qtybutton, .price-filter 
     background-size: cover !important;
     background-image: url("../images/slider/small_one_.png") !important;
   }
+  .bg-3{
+    min-height: 380px;
+    background-size: cover !important;
+    background-image: url("../images/slider/small_three.png") !important;
+  }
 }
 
 .bg-2 {
@@ -2763,10 +2768,10 @@ button, .global-overlay, .quantity .cart-plus-minus > .qtybutton, .price-filter 
 }
 
 .uren-banner_area .banner-item .banner-img-1 {
-  background-image: url("../images/banner/1-1.jpg");
+  background-image: url("../images/banner/1-1.png");
   background-repeat: no-repeat;
   background-position: center center;
-  background-size: cover;
+  background-size: contain;
   min-height: 435px;
 }
 
@@ -2777,7 +2782,7 @@ button, .global-overlay, .quantity .cart-plus-minus > .qtybutton, .price-filter 
 }
 
 .uren-banner_area .banner-item .banner-img-1.banner-img-2 {
-  background-image: url("../images/banner/1-2.jpg");
+  background-image: url("../images/banner/1-2.png");
 }
 
 .uren-banner_area .banner-item .banner-content {

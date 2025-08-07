@@ -216,15 +216,8 @@ export const useScriptLoader = (options: ScriptLoaderOptions = {}) => {
   };
 
   const initializeQuickView = () => {
-    if (typeof window !== 'undefined' && (window as any).jQuery) {
-      const $ = (window as any).jQuery;
-      
-      // Initialize Quick View modal functionality
-      $('.quick-view-btn').off('click').on('click', function(e: any) {
-        e.preventDefault();
-        $('#exampleModalCenter').modal('show');
-      });
-    }
+    // Quick View modal functionality is now handled by React components
+    // No need to initialize here as it's handled in QuickViewModal
   };
 
   const initializeAll = () => {

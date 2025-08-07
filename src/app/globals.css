@@ -75,5 +75,63 @@
   background-color: #0056b3;
 }
 
+/* Quick View Modal Styles */
+.modal.show {
+  display: block !important;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-wrapper {
+  z-index: 1050;
+}
+
+.modal-dialog-centered {
+  display: flex;
+  align-items: center;
+  min-height: calc(100% - 1rem);
+}
+
+.modal-content {
+  border-radius: 8px;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+.modal-body {
+  padding: 1.5rem;
+}
+
+.modal .close {
+  position: absolute;
+  right: 15px;
+  top: 15px;
+  z-index: 10;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #666;
+}
+
+.modal .close:hover {
+  color: #333;
+}
+
+/* Quick view modal responsive */
+@media (max-width: 768px) {
+  .modal-dialog {
+    margin: 0.5rem;
+    max-width: calc(100% - 1rem);
+  }
+  
+  .modal-inner-area {
+    flex-direction: column;
+  }
+  
+  .col-lg-5,
+  .col-xl-7 {
+    width: 100%;
+  }
+}
+
 
 

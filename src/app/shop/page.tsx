@@ -10,6 +10,7 @@ import { addToWishlist } from '@/store/slices/wishlistSlice';
 import { addToCompare } from '@/store/slices/compareSlice';
 import { useScriptLoader } from '@/hooks/useScriptLoader';
 import ApiStatusIndicator from '@/components/ApiStatusIndicator';
+import { useQuickView } from '@/components/QuickViewProvider';
 
 const ShopPage = () => {
   const dispatch = useAppDispatch();
@@ -17,6 +18,7 @@ const ShopPage = () => {
   const { items: cartItems, totalQuantity } = useAppSelector((state: any) => state.cart);
   const { items: wishlistItems } = useAppSelector((state: any) => state.wishlist);
   const { items: compareItems } = useAppSelector((state: any) => state.compare);
+  const { openQuickView } = useQuickView();
 
   // Load scripts for this page
   useScriptLoader({
@@ -391,8 +393,17 @@ const ShopPage = () => {
                                     <i className="ion-android-options"></i>
                                   </a>
                                 </li>
-                                <li className="quick-view-btn" data-toggle="modal" data-target="#exampleModalCenter">
-                                  <a href="javascript:void(0)" data-toggle="tooltip" data-placement="top" title="Quick View">
+                                <li className="quick-view-btn">
+                                  <a 
+                                    href="javascript:void(0)" 
+                                    onClick={(e) => {
+                                      e.preventDefault();
+                                      openQuickView(product);
+                                    }}
+                                    data-toggle="tooltip" 
+                                    data-placement="top" 
+                                    title="Quick View"
+                                  >
                                     <i className="ion-android-open"></i>
                                   </a>
                                 </li>
@@ -524,8 +535,17 @@ const ShopPage = () => {
                                   <i className="ion-android-options"></i>
                                 </a>
                               </li>
-                              <li className="quick-view-btn" data-toggle="modal" data-target="#exampleModalCenter">
-                                <a href="javascript:void(0)" data-toggle="tooltip" data-placement="top" title="Quick View">
+                              <li className="quick-view-btn">
+                                <a 
+                                  href="javascript:void(0)" 
+                                  onClick={(e) => {
+                                    e.preventDefault();
+                                    openQuickView(product);
+                                  }}
+                                  data-toggle="tooltip" 
+                                  data-placement="top" 
+                                  title="Quick View"
+                                >
                                   <i className="ion-android-open"></i>
                                 </a>
                               </li>
