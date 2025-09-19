@@ -3,8 +3,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { useRouter, usePathname, useParams } from 'next/navigation';
-import { useTranslations, useLocale } from 'next-intl';
+import { useRouter, usePathname } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import { useCurrentLocale } from '@/hooks/useCurrentLocale';
 import { useAppSelector, useAppDispatch } from '@/store/hooks';
 import { Product } from '@/store/slices/productSlice';
@@ -16,8 +16,8 @@ import LanguageSwitcher from './LanguageSwitcher';
 const Header = () => {
   const router = useRouter();
   const pathname = usePathname();
-  const params = useParams();
-  const locale = useLocale();
+  // const params = useParams();
+  // const locale = useLocale();
   const currentLocale = useCurrentLocale();
   const dispatch = useAppDispatch();
   const { products } = useAppSelector((state: any) => state.products);
@@ -32,15 +32,16 @@ const Header = () => {
     return `/${currentLocale}${path}`;
   };
   
-  useEffect(() => {
-    console.log('=== LOCALE DEBUG INFO ===');
-    console.log('useLocale():', locale);
-    console.log('params.locale:', params?.locale);
-    console.log('useCurrentLocale():', currentLocale);
-    console.log('pathname:', pathname);
-    console.log('window.location.pathname:', typeof window !== 'undefined' ? window.location.pathname : 'N/A');
-    console.log('========================');
-  }, [locale, params, currentLocale, pathname]);
+  // Debug logging removed to prevent SSR issues
+  // useEffect(() => {
+  //   console.log('=== LOCALE DEBUG INFO ===');
+  //   console.log('useLocale():', locale);
+  //   console.log('params.locale:', params?.locale);
+  //   console.log('useCurrentLocale():', currentLocale);
+  //   console.log('pathname:', pathname);
+  //   console.log('window.location.pathname:', typeof window !== 'undefined' ? window.location.pathname : 'N/A');
+  //   console.log('========================');
+  // }, [locale, params, currentLocale, pathname]);
   const [searchQuery, setSearchQuery] = useState('');
   const [mobileSearchQuery, setMobileSearchQuery] = useState('');
   const [searchSuggestions, setSearchSuggestions] = useState<Product[]>([]);

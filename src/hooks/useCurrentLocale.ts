@@ -7,14 +7,18 @@ import { useEffect, useState } from 'react';
 /**
  * Custom hook to get the current locale reliably
  * Uses multiple methods to determine the current locale
+ * Handles SSR properly by checking if we're on the client side
  */
 export const useCurrentLocale = () => {
   const params = useParams();
   const locale = useLocale();
   const pathname = usePathname();
   const [urlLocale, setUrlLocale] = useState<string | null>(null);
+  const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
+    setIsClient(true);
+    
     // Extract locale from URL pathname as a fallback
     const pathSegments = pathname.split('/').filter(Boolean);
     const firstSegment = pathSegments[0];
@@ -27,6 +31,11 @@ export const useCurrentLocale = () => {
       setUrlLocale(null);
     }
   }, [pathname]);
+
+  // During SSR, just return the locale from next-intl
+  if (!isClient) {
+    return locale || 'en';
+  }
 
   // Priority order: params -> urlLocale -> useLocale -> 'en'
   const currentLocale = (params?.locale as string) || urlLocale || locale || 'en';

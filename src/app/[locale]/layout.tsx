@@ -47,7 +47,6 @@ export default async function LocaleLayout({
                 <MainJsInitializer />
                 <SideCart />
                 <TawkToChat />
-                {/* <LocaleDebug /> */}
               </div>
             </QuickViewProvider>
           </Provider>

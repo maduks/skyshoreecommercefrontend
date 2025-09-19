@@ -25,8 +25,8 @@ const SideCart: React.FC<SideCartProps> = ({ onClose }) => {
     return `/${currentLocale}${path}`;
   };
 
-  // Debug logging
-  console.log('SideCart - Cart State:', { items, totalQuantity, totalAmount });
+  // Debug logging removed to prevent SSR issues
+  // console.log('SideCart - Cart State:', { items, totalQuantity, totalAmount });
 
   const formatPrice = (price: number | { $numberDouble: string }) => {
     let numericPrice: number;
@@ -60,12 +60,12 @@ const SideCart: React.FC<SideCartProps> = ({ onClose }) => {
   };
 
   const handleRemoveItem = (id: string) => {
-    console.log('Removing item with ID:', id);
+    // console.log('Removing item with ID:', id);
     dispatch(removeFromCart(id));
   };
 
   const handleQuantityChange = (id: string, newQuantity: number) => {
-    console.log('Updating quantity for ID:', id, 'to:', newQuantity);
+    // console.log('Updating quantity for ID:', id, 'to:', newQuantity);
     if (newQuantity <= 0) {
       dispatch(removeFromCart(id));
     } else {
