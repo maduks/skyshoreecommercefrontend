@@ -17,6 +17,9 @@ const CartPage = () => {
     return `/${currentLocale}${path}`;
   };
 
+
+  
+
   const handleQuantityChange = (id: string, newQuantity: number) => {
     console.log('handleQuantityChange called - ID:', id, 'newQuantity:', newQuantity);
     if (newQuantity <= 0) {
@@ -121,7 +124,7 @@ const CartPage = () => {
                   <i className="ion-bag" style={{ fontSize: '4rem', color: '#ccc', marginBottom: '1rem' }}></i>
                   <h3>Your cart is empty</h3>
                   <p>Looks like you haven&apos;t added any items to your cart yet.</p>
-                  <Link href="/shop" className="uren-btn">
+                  <Link href={createLocaleUrl('/shop')} className="uren-btn">
                     Continue Shopping
                   </Link>
                 </div>
