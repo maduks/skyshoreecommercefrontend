@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import { useAppSelector, useAppDispatch } from '@/store/hooks';
 import { registerUser, loginUser } from '@/store/slices/userSlice';
@@ -31,9 +31,9 @@ const CheckoutPage = () => {
   const { currentOrder, loading: orderLoading, error: orderError, success: orderSuccess } = useAppSelector((state) => state.order);
   
   // Helper function to create locale-aware URLs
-  const createLocaleUrl = (path: string) => {
+  const createLocaleUrl = useCallback((path: string) => {
     return `/${currentLocale}${path}`;
-  };
+  }, [currentLocale]);
   
   const [showLogin, setShowLogin] = useState(false);
   const [showCoupon, setShowCoupon] = useState(false);

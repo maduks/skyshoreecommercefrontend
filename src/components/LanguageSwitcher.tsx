@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { useRouter, usePathname, useParams } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import { useLocale, useTranslations } from 'next-intl';
 import { useCurrentLocale } from '@/hooks/useCurrentLocale';
 import Image from 'next/image';
@@ -32,7 +32,7 @@ const LanguageSwitcher = () => {
     // Ensure we don't have double slashes
     const cleanPath = pathWithoutLocale.startsWith('/') ? pathWithoutLocale : `/${pathWithoutLocale}`;
     
-    // Navigate to the new locale with the current path
+    // Navigate to the new locale with the current path.
     router.push(`/${newLocale}${cleanPath}`);
     setIsOpen(false);
   };

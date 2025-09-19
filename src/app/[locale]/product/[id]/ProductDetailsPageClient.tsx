@@ -24,7 +24,7 @@ const ProductDetailsPageClient = ({ id }: ProductDetailsPageClientProps) => {
   const dispatch = useAppDispatch();
   const currentLocale = useCurrentLocale();
   const { products, loading } = useAppSelector((state: RootState) => state.products);
-  const { items: cartItems } = useAppSelector((state: RootState) => state.cart);
+  // const { items: cartItems } = useAppSelector((state: RootState) => state.cart);
   const { items: wishlistItems } = useAppSelector((state: RootState) => state.wishlist);
   const { items: compareItems } = useAppSelector((state: RootState) => state.compare);
   

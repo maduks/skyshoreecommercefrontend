@@ -13,7 +13,7 @@ const OrderSuccessPage = () => {
   const searchParams = useSearchParams();
   const orderId = searchParams.get('orderId');
   const orderTotal = searchParams.get('total');
-  const { isAuthenticated } = useAppSelector((state: any) => state.user);
+  const { isAuthenticated } = useAppSelector((state: { user: { isAuthenticated: boolean } }) => state.user);
   
   // Helper function to create locale-aware URLs
   const createLocaleUrl = (path: string) => {

@@ -255,7 +255,7 @@ const CartPage = () => {
                     <div className="coupon-all">
                       <div className="coupon">
                         <input 
-                        onChange={(e) => {
+                        onChange={() => {
                           // const newCouponCode = e.target.value;
                         }}
                           id="coupon_code" 
