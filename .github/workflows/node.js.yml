@@ -22,10 +22,9 @@ jobs:
       # Install dependencies and build the project
       # if you have env variables in the project add them like below so that
       # the build process wont fail
-      # - name: Install dependencies and build
-      #   run: |
-      #     npm install
-      #     RESEND_API_KEY=${{ secrets.RESEND_API_KEY }} GOOGLE_API_KEY=${{ secrets.GOOGLE_API_KEY }} npm run build # Set environment variable
+      - name: Install dependencies and build
+        run: |
+          npm install
       
       # Prepare the deployment directory
       - name: Prepare Deployment Directory
