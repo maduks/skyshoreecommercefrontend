@@ -2,13 +2,21 @@
 
 import React from 'react';
 import Link from 'next/link';
+import { useLocale } from 'next-intl';
 
 const BannerSection = () => {
+  const locale = useLocale();
+  
+  // Helper function to create locale-aware URLs
+  const createLocaleUrl = (path: string) => {
+    return `/${locale}${path}`;
+  };
+
   return (
     <div className="uren-banner_area">
       <div className="container-fluid">
         <div className="row">
-          <div className="col-lg-6">
+          <div className="col-lg-6 col-md-6 col-sm-12">
             <div className="banner-item img-hover_effect">
               <div className="banner-img-1"></div>
               <div className="banner-content">
@@ -17,12 +25,12 @@ const BannerSection = () => {
                 <h3>SUV&apos;S</h3>
                 <p>Don&apos;t risk the performance of your luxury car with inferior oil. Ensure your engine runs smoothly and efficiently with our premium engine oil.</p>
                 <div className="uren-btn-ps_left">
-                  <Link className="uren-btn" href="/shop">Shop Now</Link>
+                  <Link className="uren-btn" href={createLocaleUrl('/shop')}>Shop Now</Link>
                 </div>
               </div>
             </div>
           </div>
-          <div className="col-lg-6">
+          <div className="col-lg-6 col-md-6 col-sm-12">
             <div className="banner-item img-hover_effect">
               <div className="banner-img-1 banner-img-2"></div>
               <div className="banner-content">
@@ -31,7 +39,7 @@ const BannerSection = () => {
                 <h3>Heavy Duty Excellence</h3>
                 <p>Ensure your trucks and heavy-duty vehicles operate at peak efficiency with our top-quality diesel engine oil, designed for durability and superior protection.</p>
                 <div className="uren-btn-ps_left">
-                  <Link className="uren-btn" href="/shop">Shop Now</Link>
+                  <Link className="uren-btn" href={createLocaleUrl('/shop')}>Shop Now</Link>
                 </div>
               </div>
             </div>

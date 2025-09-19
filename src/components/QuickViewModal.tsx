@@ -1,51 +1,128 @@
 'use client';
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 import React, { useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Product } from '@/store/slices/productSlice';
-import { useScriptInitializer } from '@/hooks/useScriptInitializer';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { addToCart } from '@/store/slices/cartSlice';
+import { addToWishlist } from '@/store/slices/wishlistSlice';
+import { addToCompare } from '@/store/slices/compareSlice';
+
 
 interface QuickViewModalProps {
-  product: Product | null;
   isOpen: boolean;
   onClose: () => void;
-  onAddToCart: (product: Product) => void;
-  onAddToWishlist: (product: Product) => void;
-  onAddToCompare: (product: Product) => void;
-  isInCart: (productId: string) => boolean;
-  isInWishlist: (productId: string) => boolean;
-  isInCompare: (productId: string) => boolean;
+  product: any;
 }
 
-const QuickViewModal: React.FC<QuickViewModalProps> = ({
-  product,
-  isOpen,
-  onClose,
-  onAddToCart,
-  onAddToWishlist,
-  onAddToCompare,
-  isInCart,
-  isInWishlist,
-  isInCompare
-}) => {
-  const { initializeAllModalScripts } = useScriptInitializer();
+const QuickViewModal: React.FC<QuickViewModalProps> = ({ isOpen, onClose, product }) => {
+  const dispatch = useAppDispatch();
+  const { items: cartItems } = useAppSelector((state) => state.cart);
+  const { items: wishlistItems } = useAppSelector((state) => state.wishlist);
+  const { items: compareItems } = useAppSelector((state) => state.compare);
+
+  const formatPrice = (price: number) => {
+    return new Intl.NumberFormat('en-NG', {
+      style: 'currency',
+      currency: 'NGN',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    }).format(price);
+  };
+
+  const isInCart = (productId: string) => {
+    return cartItems.some((item: any) => item._id === productId);
+  };
+
+  const isInWishlist = (productId: string) => {
+    return wishlistItems.some((item: any) => item._id === productId);
+  };
+
+  const isInCompare = (productId: string) => {
+    return compareItems.some((item: any) => item._id === productId);
+  };
+
+  const handleAddToCart = () => {
+    if (product) {
+      dispatch(addToCart({
+        _id: product._id,
+        name: product.name,
+        price: product.price,
+        salePrice: product.salePrice,
+        images: product.images,
+        category: product.category,
+        quantity: 1,
+        sku: product.sku,
+        brand: product.brand,
+        stock: product.stock
+      }));
+    }
+  };
+
+  const handleAddToWishlist = () => {
+    if (product) {
+      dispatch(addToWishlist({
+        _id: product._id,
+        name: product.name,
+        price: product.price,
+        salePrice: product.salePrice,
+        images: product.images,
+        category: product.category,
+        sku: product.sku,
+        brand: product.brand,
+        stock: product.stock
+      }));
+    }
+  };
+
+  const handleAddToCompare = () => {
+    if (product) {
+      dispatch(addToCompare({
+        _id: product._id,
+        name: product.name,
+        price: product.price,
+        salePrice: product.salePrice,
+        images: product.images,
+        category: product.category,
+        sku: product.sku,
+        brand: product.brand,
+        stock: product.stock,
+        description: product.description
+      }));
+    }
+  };
 
   useEffect(() => {
     if (isOpen && product) {
-      // Initialize scripts when modal opens
-      initializeAllModalScripts();
+      // Simple initialization - let main.js handle everything
+      const timer = setTimeout(() => {
+        if (typeof window !== 'undefined' && (window as any).jQuery) {
+          const $ = (window as any).jQuery;
+          
+          // Initialize modal-specific functionality
+          if ($.fn.slick && $('.sp-img_slider').length) {
+            try {
+              $('.sp-img_slider').slick({
+                slidesToShow: 1,
+                arrows: false,
+                fade: true,
+                draggable: false,
+                swipe: false,
+                asNavFor: '.sp-img_slider-nav'
+              });
+            } catch (error) {
+              console.warn('Modal slider initialization failed:', error);
+            }
+          }
+        }
+      }, 100);
+
+      return () => clearTimeout(timer);
     }
-  }, [isOpen, product, initializeAllModalScripts]);
+  }, [isOpen, product]);
 
-  if (!product) return null;
-
-  const formatPrice = (price: number) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'NGN',
-    }).format(price);
-  };
+  if (!isOpen || !product) return null;
 
   const renderStars = (rating: number) => {
     const stars = [];
@@ -89,6 +166,7 @@ const QuickViewModal: React.FC<QuickViewModalProps> = ({
                              alt={`${product.name} - Image ${index + 1}`}
                              width={400}
                              height={400}
+                             quality={95}
                              style={{ objectFit: 'cover' }}
                            />
                          </div>
@@ -100,6 +178,7 @@ const QuickViewModal: React.FC<QuickViewModalProps> = ({
                           alt={product.name}
                           width={400}
                           height={400}
+                          quality={95}
                           style={{ objectFit: 'cover' }}
                         />
                       </div>
@@ -114,6 +193,7 @@ const QuickViewModal: React.FC<QuickViewModalProps> = ({
                              alt={`${product.name} - Thumbnail ${index + 1}`}
                              width={80}
                              height={80}
+                             quality={95}
                              style={{ objectFit: 'contain' }}
                            />
                          </div>
@@ -175,42 +255,42 @@ const QuickViewModal: React.FC<QuickViewModalProps> = ({
                           className={`add-to_cart ${isInCart(product._id) ? 'added' : ''}`}
                           onClick={(e) => {
                             e.preventDefault();
-                            onAddToCart(product);
+                            handleAddToCart();
                           }}
                         >
                           {isInCart(product._id) ? 'Added to Cart' : 'Add To Cart'}
                         </a>
                       </li>
-                      {/* <li>
+                      <li>
                         <a 
                           href="javascript:void(0)"
                           className={isInWishlist(product._id) ? 'added' : ''}
                           onClick={(e) => {
                             e.preventDefault();
-                            onAddToWishlist(product);
+                            handleAddToWishlist();
                           }}
                         >
                           <i className="ion-android-favorite-outline"></i>
                         </a>
-                      </li> */}
-                      {/* <li>
+                      </li>
+                      <li>
                         <a 
                           href="javascript:void(0)"
                           className={isInCompare(product._id) ? 'added' : ''}
                           onClick={(e) => {
                             e.preventDefault();
-                            onAddToCompare(product);
+                            handleAddToCompare();
                           }}
                         >
                           <i className="ion-ios-shuffle-strong"></i>
                         </a>
-                      </li> */}
+                      </li>
                     </ul>
                   </div>
                   <div className="uren-tag-line">
                     <h6>Tags:</h6>
                     {product.tags && product.tags.length > 0 ? (
-                      product.tags.map((tag, index) => (
+                      product.tags.map((tag: any, index: any) => (
                         <React.Fragment key={tag}>
                           <a href="javascript:void(0)">{tag}</a>
                           {index < product.tags.length - 1 && ', '}

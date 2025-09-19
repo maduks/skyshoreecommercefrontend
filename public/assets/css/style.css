@@ -1150,7 +1150,7 @@ button, .global-overlay, .quantity .cart-plus-minus > .qtybutton, .price-filter 
 }
 
 .bg--sapphire {
-  background-color: #0c2a5c;
+  background-color: #061837;
 }
 
 .bg--primary {
@@ -1218,7 +1218,12 @@ button, .global-overlay, .quantity .cart-plus-minus > .qtybutton, .price-filter 
       -ms-flex-pack: end;
           justify-content: flex-end;
 }
-
+@media (max-width: 1599px) {
+  .container-fluid {
+      padding: 0 10px;
+      padding-top: 5px;
+  }
+}
 /* --Uren's Button-- */
 .uren-btn,
 .uren-btn-2,
@@ -1233,8 +1238,9 @@ button, .global-overlay, .quantity .cart-plus-minus > .qtybutton, .price-filter 
   color: #333333;
   -webkit-box-shadow: 0px 8px 15px rgba(0, 0, 0, 0);
           box-shadow: 0px 8px 15px rgba(0, 0, 0, 0);
-  width: 175px;
+  width: 205px;
   height: 45px;
+  margin-bottom: 10px;
   line-height: 45px;
   display: block;
   text-align: center;
@@ -2774,16 +2780,21 @@ button, .global-overlay, .quantity .cart-plus-minus > .qtybutton, .price-filter 
   background-size: contain;
   min-height: 435px;
 }
+.uren-banner_area .banner-item .banner-img-1.banner-img-2 {
+  background-image: url("../images/banner/1-2.png");
+}
 
 @media (max-width: 479px) {
   .uren-banner_area .banner-item .banner-img-1 {
     min-height: 320px;
   }
+
+  .uren-banner_area .banner-item .banner-img-1.banner-img-2 {
+    background-image: url("../images/banner/1-1small.png");
+  }
 }
 
-.uren-banner_area .banner-item .banner-img-1.banner-img-2 {
-  background-image: url("../images/banner/1-2.png");
-}
+
 
 .uren-banner_area .banner-item .banner-content {
   position: absolute;
@@ -2886,11 +2897,138 @@ button, .global-overlay, .quantity .cart-plus-minus > .qtybutton, .price-filter 
     max-width: 84%;
     font-size: 13px;
   }
+
+  .uren-banner_area .banner-item .banner-img-1 {
+    background-image: url(../images/banner/1-2small.png);
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+    min-height: 435px;
+}
+
+.uren-banner_area .banner-item .banner-img-2 {
+  background-image: url(../images/banner/1-2small.png);
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  min-height: 435px;
+}
 }
 
 @media (max-width: 479px) {
   .uren-banner_area .banner-item .banner-content > p {
     max-width: 100%;
+  }
+
+
+  .uren-banner_area .banner-item .banner-img-1 {
+    background-image: url(../images/banner/1-2small.png);
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+    min-height: 435px;
+}
+
+
+.uren-banner_area .banner-item .banner-img-2 {
+  background-image: url(../images/banner/1-1small.png);
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  min-height: 435px;
+}
+  
+  /* Extra small mobile styles */
+  .uren-banner_area .banner-item {
+    min-height: 380px;
+    margin-bottom: 8px;
+  }
+  
+  .uren-banner_area .banner-item .banner-img-1 {
+    min-height: 380px;
+  }
+  
+  .uren-banner_area .banner-item .banner-content {
+    left: 8.5%;
+    max-width: 70%;
+  }
+  
+  .uren-banner_area .banner-item .banner-content > span.offer {
+    font-size: 12px;
+    padding-bottom: 5px;
+  }
+  
+  .uren-banner_area .banner-item .banner-content > h4,
+  .uren-banner_area .banner-item .banner-content h3 {
+    font-size: 14px;
+    line-height: 1.1;
+  }
+  
+  .uren-banner_area .banner-item .banner-content > h3 {
+    padding-bottom: 8px;
+  }
+  
+  .uren-banner_area .banner-item .banner-content > p {
+    font-size: 10px;
+    line-height: 1.2;
+    padding-top: 3px;
+  }
+  
+  .uren-banner_area .banner-item .banner-content > .uren-btn-ps_left {
+    padding-top: 8px;
+  }
+  
+  .uren-banner_area .banner-item .banner-content > .uren-btn-ps_left .uren-btn {
+    width: 90px;
+    font-size: 11px;
+    padding: 6px 12px;
+    display: none; /* Hide shop now button on extra small mobile */
+  }
+}
+
+  /* Extra small screens - prevent text overlap */
+  @media (max-width: 375px) {
+    .uren-banner_area .banner-item {
+      min-height: 400px;
+      margin-bottom: 5px;
+    }
+    
+    .uren-banner_area .banner-item .banner-img-1 {
+      min-height: 400px;
+    }
+    
+    .uren-banner_area .banner-item .banner-content {
+      left: 8.5%;
+      max-width: 80%;
+    }
+  
+  .uren-banner_area .banner-item .banner-content > span.offer {
+    font-size: 10px;
+    padding-bottom: 3px;
+  }
+  
+  .uren-banner_area .banner-item .banner-content > h4,
+  .uren-banner_area .banner-item .banner-content h3 {
+    font-size: 12px;
+    line-height: 1.1;
+  }
+  
+  .uren-banner_area .banner-item .banner-content > h3 {
+    padding-bottom: 3px;
+    font-size: 10px;
+  }
+  
+  .uren-banner_area .banner-item .banner-content > p {
+    font-size: 9px;
+    line-height: 1.1;
+    padding-top: 2px;
+  }
+  
+  .uren-banner_area .banner-item .banner-content > .uren-btn-ps_left .uren-btn {
+    width: 80px;
+    font-size: 10px;
+    padding: 5px 10px;
+    display: none; /* Hide shop now button on very small screens */
   }
 }
 
@@ -2908,6 +3046,40 @@ button, .global-overlay, .quantity .cart-plus-minus > .qtybutton, .price-filter 
   .uren-banner_area .banner-item .banner-content > .uren-btn-ps_left {
     padding-top: 10px;
   }
+  
+  /* Tablet responsive styles */
+  .uren-banner_area .banner-item .banner-content {
+    left: 6%;
+    right: 6%;
+  }
+  
+  .uren-banner_area .banner-item .banner-content > span.offer {
+    font-size: 15px;
+    padding-bottom: 10px;
+  }
+  
+  .uren-banner_area .banner-item .banner-content > h4,
+  .uren-banner_area .banner-item .banner-content h3 {
+    font-size: 22px;
+    line-height: 1.3;
+  }
+  
+  .uren-banner_area .banner-item .banner-content > h3 {
+    padding-bottom: 12px;
+  }
+  
+  .uren-banner_area .banner-item .banner-content > p {
+    max-width: 90%;
+    font-size: 14px;
+    line-height: 1.4;
+    padding-top: 12px;
+  }
+  
+  .uren-banner_area .banner-item .banner-content > .uren-btn-ps_left .uren-btn {
+    width: 110px;
+    font-size: 13px;
+    padding: 10px 18px;
+  }
 }
 
 .uren-banner_area .banner-item .banner-content > .uren-btn-ps_left .uren-btn {
@@ -2916,7 +3088,75 @@ button, .global-overlay, .quantity .cart-plus-minus > .qtybutton, .price-filter 
 
 @media (max-width: 991px) {
   .uren-banner_area [class*="col-"]:not(:last-child) {
-    margin-bottom: 30px;
+    margin-bottom: 15px;
+  }
+  
+  /* Reduce row spacing on mobile */
+  .uren-banner_area .row {
+    margin-bottom: 0;
+  }
+  
+  .uren-banner_area .container-fluid {
+    padding-bottom: 0;
+  }
+  
+  /* Increase banner height on mobile */
+  .uren-banner_area .banner-item {
+    min-height: 350px;
+    margin-bottom: 10px;
+  }
+  
+  .uren-banner_area .banner-item .banner-img-1 {
+    min-height: 350px;
+  }
+  
+  /* Mobile responsive styles for banner content */
+  .uren-banner_area .banner-item .banner-content {
+    position: absolute;
+    top: 50%;
+    left: 8.5%;
+    -webkit-transform: translateY(-50%);
+        -ms-transform: translateY(-50%);
+            transform: translateY(-50%);
+    text-align: left;
+    max-width: 60%;
+    z-index: 10;
+  }
+  
+  .uren-banner_area .banner-item .banner-content > span.offer {
+    font-size: 14px;
+    padding-bottom: 8px;
+  }
+  
+  .uren-banner_area .banner-item .banner-content > h4,
+  .uren-banner_area .banner-item .banner-content h3 {
+    font-size: 16px;
+    line-height: 1.2;
+    margin-bottom: 5px;
+  }
+  
+  .uren-banner_area .banner-item .banner-content > h3 {
+    padding-bottom: 5px;
+    font-size: 12px;
+  }
+  
+  .uren-banner_area .banner-item .banner-content > p {
+    max-width: 100%;
+    font-size: 11px;
+    line-height: 1.3;
+    padding-top: 5px;
+    margin-bottom: 8px;
+  }
+  
+  .uren-banner_area .banner-item .banner-content > .uren-btn-ps_left {
+    padding-top: 10px;
+    display: none; /* Hide shop now button on mobile */
+  }
+  
+  .uren-banner_area .banner-item .banner-content > .uren-btn-ps_left .uren-btn {
+    width: 100px;
+    font-size: 12px;
+    padding: 8px 15px;
   }
 }
 

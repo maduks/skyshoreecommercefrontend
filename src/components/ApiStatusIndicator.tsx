@@ -2,13 +2,14 @@
 
 import React from 'react';
 import { useAppSelector } from '@/store/hooks';
+import { RootState } from '@/store/store';
 
 interface ApiStatusIndicatorProps {
   className?: string;
 }
 
 const ApiStatusIndicator: React.FC<ApiStatusIndicatorProps> = ({ className = '' }) => {
-  const { loading, error } = useAppSelector((state: any) => state.products);
+  const { error } = useAppSelector((state: RootState) => state.products);
 
   if (!error) return null;
 

@@ -3,8 +3,8 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 export interface WishlistItem {
   _id: string;
   name: string;
-  price: number;
-  salePrice?: number;
+  price: number | { $numberDouble: string };
+  salePrice?: number | { $numberDouble: string };
   images: string[];
   category: {
     _id: string;
@@ -12,7 +12,7 @@ export interface WishlistItem {
   };
   sku: string;
   brand: string;
-  stock: number;
+  stock: number | { $numberInt: string } | { $numberDouble: string };
   addedAt: string;
 }
 

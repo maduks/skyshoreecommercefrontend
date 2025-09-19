@@ -1,10 +1,28 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
+// Helper function to get numeric value from MongoDB number format
+const getNumericValue = (value: number | { $numberDouble: string }): number => {
+  if (typeof value === 'number') {
+    return value;
+  } else if ('$numberDouble' in value) {
+    return parseFloat(value.$numberDouble);
+  }
+  return 0;
+};
+
+// Helper function to get the effective price (sale price if available, otherwise regular price)
+const getEffectivePrice = (item: CartItem): number => {
+  if (item.salePrice && getNumericValue(item.salePrice) < getNumericValue(item.price)) {
+    return getNumericValue(item.salePrice);
+  }
+  return getNumericValue(item.price);
+};
+
 export interface CartItem {
   _id: string;
   name: string;
-  price: number;
-  salePrice?: number;
+  price: number | { $numberDouble: string };
+  salePrice?: number | { $numberDouble: string };
   images: string[];
   category: {
     _id: string;
@@ -13,7 +31,7 @@ export interface CartItem {
   quantity: number;
   sku: string;
   brand: string;
-  stock: number;
+  stock: number | { $numberInt: string } | { $numberDouble: string };
 }
 
 interface CartState {
@@ -45,14 +63,14 @@ const cartSlice = createSlice({
       }
       
       state.totalQuantity = state.items.reduce((total, item) => total + item.quantity, 0);
-      state.totalAmount = state.items.reduce((total, item) => total + (item.price * item.quantity), 0);
+      state.totalAmount = state.items.reduce((total, item) => total + (getEffectivePrice(item) * item.quantity), 0);
     },
     
     removeFromCart: (state, action: PayloadAction<string>) => {
       const id = action.payload;
       state.items = state.items.filter(item => item._id !== id);
       state.totalQuantity = state.items.reduce((total, item) => total + item.quantity, 0);
-      state.totalAmount = state.items.reduce((total, item) => total + (item.price * item.quantity), 0);
+      state.totalAmount = state.items.reduce((total, item) => total + (getEffectivePrice(item) * item.quantity), 0);
     },
     
     updateQuantity: (state, action: PayloadAction<{ id: string; quantity: number }>) => {
@@ -68,7 +86,7 @@ const cartSlice = createSlice({
       }
       
       state.totalQuantity = state.items.reduce((total, item) => total + item.quantity, 0);
-      state.totalAmount = state.items.reduce((total, item) => total + (item.price * item.quantity), 0);
+      state.totalAmount = state.items.reduce((total, item) => total + (getEffectivePrice(item) * item.quantity), 0);
     },
     
     clearCart: (state) => {

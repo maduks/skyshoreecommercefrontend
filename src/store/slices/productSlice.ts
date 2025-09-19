@@ -12,31 +12,31 @@ export interface Category {
 }
 
 export interface Product {
-  _id: string;
+  _id: string | { $oid: string };
   name: string;
   description: string;
-  price: number;
-  salePrice?: number;
+  price: number | { $numberDouble: string };
+  salePrice?: number | { $numberDouble: string };
   category: {
-    _id: string;
-    name: string;
+    _id: string | { $oid: string };
+    name?: string;
   };
   images: string[];
-  stock: number;
+  stock: number | { $numberInt: string };
   sku: string;
   brand: string;
   specifications?: string;
   isActive: boolean;
   tags: string[];
   variations?: object[];
-  averageRating: number;
-  totalRatings: number;
+  averageRating: number | { $numberInt: string };
+  totalRatings: number | { $numberInt: string };
   featured: boolean;
   newArrival: boolean;
-  saleEndDate?: string;
+  saleEndDate?: string | { $date: { $numberLong: string } };
   ratings: object[];
-  createdAt: string;
-  updatedAt: string;
+  createdAt: string | { $date: { $numberLong: string } };
+  updatedAt: string | { $date: { $numberLong: string } };
 }
 
 interface ProductState {
@@ -127,11 +127,11 @@ const fallbackCategories = [
 const BASE_URL = "https://skyshorecommerce.vercel.app/api";
 
 // Helper function for retrying API calls with exponential backoff
-const retryWithBackoff = async (apiCall: () => Promise<any>, maxRetries = 3) => {
+const retryWithBackoff = async (apiCall: () => Promise<unknown>, maxRetries = 3) => {
   for (let i = 0; i < maxRetries; i++) {
     try {
       return await apiCall();
-    } catch (error: any) {
+    } catch (error: unknown) {
       if (i === maxRetries - 1) {
         throw error;
       }
@@ -156,26 +156,27 @@ export const fetchCategories = createAsyncThunk(
         return res;
       });
       
-      const data = response.data;
+      const data = (response as { data: unknown }).data;
       return data;
-    } catch (error: any) {
+    } catch (error: unknown) {
       let errorMessage = 'Failed to fetch categories';
       
-      if (error.response) {
+      if (error && typeof error === 'object' && 'response' in error) {
+        const axiosError = error as { response?: { status: number; data?: { message?: string } } };
         // Server responded with error status
-        if (error.response.status === 500) {
+        if (axiosError.response?.status === 500) {
           errorMessage = 'Server error: Database timeout. Please try again later.';
-        } else if (error.response.status === 404) {
+        } else if (axiosError.response?.status === 404) {
           errorMessage = 'Categories not found';
         } else {
-          errorMessage = error.response.data?.message || `Server error: ${error.response.status}`;
+          errorMessage = axiosError.response?.data?.message || `Server error: ${axiosError.response?.status}`;
         }
-      } else if (error.request) {
+      } else if (error && typeof error === 'object' && 'request' in error) {
         // Network error
         errorMessage = 'Network error: Unable to connect to server';
       } else {
         // Other error
-        errorMessage = error.message || 'Failed to fetch categories';
+        errorMessage = error instanceof Error ? error.message : 'Failed to fetch categories';
       }
       
       return rejectWithValue(errorMessage);
@@ -196,26 +197,27 @@ export const fetchProducts = createAsyncThunk(
         return res;
       });
       
-      const data = response.data;
+      const data = (response as { data: unknown }).data;
       return data;
-    } catch (error: any) {
+    } catch (error: unknown) {
       let errorMessage = 'Failed to fetch products';
       
-      if (error.response) {
+      if (error && typeof error === 'object' && 'response' in error) {
+        const axiosError = error as { response?: { status: number; data?: { message?: string } } };
         // Server responded with error status
-        if (error.response.status === 500) {
+        if (axiosError.response?.status === 500) {
           errorMessage = 'Server error: Database timeout. Please try again later.';
-        } else if (error.response.status === 404) {
+        } else if (axiosError.response?.status === 404) {
           errorMessage = 'Products not found';
         } else {
-          errorMessage = error.response.data?.message || `Server error: ${error.response.status}`;
+          errorMessage = axiosError.response?.data?.message || `Server error: ${axiosError.response?.status}`;
         }
-      } else if (error.request) {
+      } else if (error && typeof error === 'object' && 'request' in error) {
         // Network error
         errorMessage = 'Network error: Unable to connect to server';
       } else {
         // Other error
-        errorMessage = error.message || 'Failed to fetch products';
+        errorMessage = error instanceof Error ? error.message : 'Failed to fetch products';
       }
       
       return rejectWithValue(errorMessage);
@@ -294,7 +296,12 @@ const productSlice = createSlice({
       })
       .addCase(fetchCategories.fulfilled, (state, action) => {
         state.loading = false;
-        state.categories = action.payload.categories || action.payload;
+        const payload = action.payload as { categories?: Category[] } | Category[];
+        if (Array.isArray(payload)) {
+          state.categories = payload;
+        } else {
+          state.categories = payload.categories || [];
+        }
       })
       .addCase(fetchCategories.rejected, (state, action) => {
         state.loading = false;
@@ -311,12 +318,27 @@ const productSlice = createSlice({
       })
       .addCase(fetchProducts.fulfilled, (state, action) => {
         state.loading = false;
-        state.products = action.payload.products || action.payload;
-        state.pagination = {
-          totalPages: action.payload.totalPages || 1,
-          currentPage: action.payload.currentPage || 1,
-          total: action.payload.total || 0,
-        };
+        const payload = action.payload as { 
+          products?: Product[]; 
+          totalPages?: number; 
+          currentPage?: number; 
+          total?: number 
+        } | Product[];
+        if (Array.isArray(payload)) {
+          state.products = payload;
+          state.pagination = {
+            totalPages: 1,
+            currentPage: 1,
+            total: payload.length,
+          };
+        } else {
+          state.products = payload.products || [];
+          state.pagination = {
+            totalPages: payload.totalPages || 1,
+            currentPage: payload.currentPage || 1,
+            total: payload.total || 0,
+          };
+        }
       })
       .addCase(fetchProducts.rejected, (state, action) => {
         state.loading = false;
@@ -333,7 +355,7 @@ const productSlice = createSlice({
       })
       .addCase(fetchProductDetails.fulfilled, (state, action) => {
         state.loading = false;
-        state.currentProduct = action.payload;
+        state.currentProduct = action.payload as Product;
       })
       .addCase(fetchProductDetails.rejected, (state, action) => {
         state.loading = false;

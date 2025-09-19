@@ -1,14 +1,165 @@
 'use client';
-
-import React, { useState } from 'react';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname, useParams } from 'next/navigation';
+import { useTranslations, useLocale } from 'next-intl';
+import { useCurrentLocale } from '@/hooks/useCurrentLocale';
+import { useAppSelector, useAppDispatch } from '@/store/hooks';
+import { Product } from '@/store/slices/productSlice';
+import { closeCart, openCart } from '@/store/slices/cartSlice';
+import CartIcon from './CartIcon';
+import SideCart from './SideCart';
+import LanguageSwitcher from './LanguageSwitcher';
 
 const Header = () => {
   const router = useRouter();
+  const pathname = usePathname();
+  const params = useParams();
+  const locale = useLocale();
+  const currentLocale = useCurrentLocale();
+  const dispatch = useAppDispatch();
+  const { products } = useAppSelector((state: any) => state.products);
+  const { isAuthenticated } = useAppSelector((state: any) => state.user);
+  const { isOpen: isMiniCartOpen } = useAppSelector((state: any) => state.cart);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isMiniCartOpen, setIsMiniCartOpen] = useState(false);
+  const t = useTranslations('navigation');
+  const tHeader = useTranslations('header');
+
+  // Helper function to create locale-aware URLs
+  const createLocaleUrl = (path: string) => {
+    return `/${currentLocale}${path}`;
+  };
+  
+  useEffect(() => {
+    console.log('=== LOCALE DEBUG INFO ===');
+    console.log('useLocale():', locale);
+    console.log('params.locale:', params?.locale);
+    console.log('useCurrentLocale():', currentLocale);
+    console.log('pathname:', pathname);
+    console.log('window.location.pathname:', typeof window !== 'undefined' ? window.location.pathname : 'N/A');
+    console.log('========================');
+  }, [locale, params, currentLocale, pathname]);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [mobileSearchQuery, setMobileSearchQuery] = useState('');
+  const [searchSuggestions, setSearchSuggestions] = useState<Product[]>([]);
+  const [mobileSearchSuggestions, setMobileSearchSuggestions] = useState<Product[]>([]);
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const [showMobileSuggestions, setShowMobileSuggestions] = useState(false);
+  const searchRef = useRef<HTMLDivElement>(null);
+  const mobileSearchRef = useRef<HTMLDivElement>(null);
+
+  // Handle desktop search input changes
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const query = e.target.value;
+    setSearchQuery(query);
+    
+    if (query.length >= 2) {
+      const filtered = products.filter((product: Product) => 
+        product.name.toLowerCase().includes(query.toLowerCase()) ||
+        product.brand.toLowerCase().includes(query.toLowerCase()) ||
+        product.sku.toLowerCase().includes(query.toLowerCase())
+      ).slice(0, 5); // Limit to 5 suggestions
+      setSearchSuggestions(filtered);
+      setShowSuggestions(true);
+    } else {
+      setSearchSuggestions([]);
+      setShowSuggestions(false);
+    }
+  };
+
+  // Handle mobile search input changes
+  const handleMobileSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const query = e.target.value;
+    setMobileSearchQuery(query);
+    
+    if (query.length >= 2) {
+      const filtered = products.filter((product: Product) => 
+        product.name.toLowerCase().includes(query.toLowerCase()) ||
+        product.brand.toLowerCase().includes(query.toLowerCase()) ||
+        product.sku.toLowerCase().includes(query.toLowerCase())
+      ).slice(0, 5); // Limit to 5 suggestions
+      setMobileSearchSuggestions(filtered);
+      setShowMobileSuggestions(true);
+    } else {
+      setMobileSearchSuggestions([]);
+      setShowMobileSuggestions(false);
+    }
+  };
+
+  // Handle suggestion click
+  const handleSuggestionClick = (product: Product) => {
+    const productId = typeof product._id === 'string' ? product._id : product._id.$oid;
+    router.push(createLocaleUrl(`/product/${productId}`));
+    setSearchQuery('');
+    setSearchSuggestions([]);
+    setShowSuggestions(false);
+    setIsMobileMenuOpen(false);
+  };
+
+  // Handle mobile suggestion click
+  const handleMobileSuggestionClick = (product: Product) => {
+    const productId = typeof product._id === 'string' ? product._id : product._id.$oid;
+    router.push(createLocaleUrl(`/product/${productId}`));
+    setMobileSearchQuery('');
+    setMobileSearchSuggestions([]);
+    setShowMobileSuggestions(false);
+    setIsMobileMenuOpen(false);
+  };
+
+  // Handle desktop search form submit
+  const handleSearchSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      router.push(createLocaleUrl(`/shop?search=${encodeURIComponent(searchQuery.trim())}`));
+      setSearchQuery('');
+      setSearchSuggestions([]);
+      setShowSuggestions(false);
+    }
+  };
+
+  // Handle mobile search form submit
+  const handleMobileSearchSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (mobileSearchQuery.trim()) {
+      router.push(createLocaleUrl(`/shop?search=${encodeURIComponent(mobileSearchQuery.trim())}`));
+      setMobileSearchQuery('');
+      setMobileSearchSuggestions([]);
+      setShowMobileSuggestions(false);
+      setIsMobileMenuOpen(false);
+    }
+  };
+
+  // Close suggestions when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
+        setShowSuggestions(false);
+      }
+      if (mobileSearchRef.current && !mobileSearchRef.current.contains(event.target as Node)) {
+        setShowMobileSuggestions(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
+  // Helper function to check if a route is active
+  const isActiveRoute = (route: string) => {
+    if (route === '/') {
+      return pathname === '/';
+    }
+    return pathname.startsWith(route);
+  };
+
+  // Helper function to get active class
+  const getActiveClass = (route: string) => {
+    return isActiveRoute(route) ? 'active' : '';
+  };
   
 
   return (
@@ -23,18 +174,18 @@ const Header = () => {
                 <div className="main-menu_area position-relative">
                   <nav className="main-nav">
                     <ul>
-                      <li className="dropdown-holder active">
-                        <Link onClick={() => router.push('/home')} href="/">Home</Link>
+                      <li className={`dropdown-holder ${getActiveClass('/')}`}>
+                        <Link href={createLocaleUrl('/')}>{t('home')}</Link>
                       
                       </li>
-                      <li className="megamenu-holder">
-                        <Link href="/shop">Shop </Link>
+                      <li className={`megamenu-holder ${getActiveClass('/shop')}`}>
+                        <Link href={createLocaleUrl('/shop')}>{t('shop')} </Link>
                      
                       </li>
                     
-                      <li className=""><Link href="/about">About Us</Link></li>
-                      <li className=""><Link href="/contact">Contact</Link></li>
-                      <li className=""><Link href="/blog">Blog </Link>
+                      <li className={getActiveClass('/about')}><Link href={createLocaleUrl('/about')}>{t('about')}</Link></li>
+                      <li className={getActiveClass('/contact')}><Link href={createLocaleUrl('/contact')}>{t('contact')}</Link></li>
+                      <li className={getActiveClass('/blog')}><Link href={createLocaleUrl('/blog')}>{t('blog')} </Link>
                     
                       </li>
                     </ul>
@@ -45,24 +196,12 @@ const Header = () => {
                 <div className="ht-right_area">
                   <div className="ht-menu">
                     <ul>
-                 
+                     <LanguageSwitcher />
                       <li>
-                        <Link href="#">Language <i className="fa fa-chevron-down"></i></Link>
-                        <ul className="ht-dropdown">
-                          <li className="active">
-                            <Link href="#">
-                              <Image src="/assets/images/menu/icon/1.jpg" alt="Language Icon" width={20} height={15} />
-                              English
-                            </Link>
-                          </li>
-                         
-                        </ul>
-                      </li>
-                      <li>
-                        <Link href="/my-account">My Account<i className="fa fa-chevron-down"></i></Link>
+                        <Link style={{color:'#fff'}} href={createLocaleUrl('/my-account')}>{t('myAccount')}<i className="fa fa-chevron-down"></i></Link>
                         <ul className="ht-dropdown ht-my_account">
-                          <li><Link href="/register">Register</Link></li>
-                          <li className="active"><Link href="/login">Login</Link></li>
+                          <li><Link href={createLocaleUrl('/register')}>{t('register')}</Link></li>
+                          <li className="active"><Link href={createLocaleUrl('/login')}>{t('login')}</Link></li>
                         </ul>
                       </li>
                     </ul>
@@ -81,18 +220,18 @@ const Header = () => {
                 <div className="main-menu_area position-relative">
                   <nav className="main-nav">
                     <ul>
-                      <li className="dropdown-holder active">
-                        <Link href="/">Home</Link>
+                      <li className={`dropdown-holder ${getActiveClass('/')}`}>
+                        <Link href={createLocaleUrl('/')}>{t('home')}</Link>
                       
                       </li>
-                      <li className="megamenu-holder">
-                        <Link href="/shop">Shop </Link>
+                      <li className={`megamenu-holder ${getActiveClass('/shop')}`}>
+                        <Link href={createLocaleUrl('/shop')}>{t('shop')} </Link>
                       
                       </li>
                     
-                      <li className=""><Link href="/about">About Us</Link></li>
-                      <li className=""><Link href="/contact">Contact</Link></li>
-                      <li className=""><Link href="/blog">Blog </Link>
+                      <li className={getActiveClass('/about')}><Link href={createLocaleUrl('/about')}>{t('about')}</Link></li>
+                      <li className={getActiveClass('/contact')}><Link href={createLocaleUrl('/contact')}>{t('contact')}</Link></li>
+                      <li className={getActiveClass('/blog')}><Link href={createLocaleUrl('/blog')}>{t('blog')} </Link>
                     
                       </li>
                     </ul>
@@ -101,8 +240,8 @@ const Header = () => {
               </div>
               <div className="col-sm-3 d-block d-lg-none">
                 <div className="header-logo_area header-sticky_logo">
-                  <Link href="/">
-                    <Image src="/assets/images/menu/logo/logo_skylubs.png" alt="Skyshore Logo" width={150} height={50} />
+                  <Link href={createLocaleUrl('/')}>
+                    <Image src="https://ik.imagekit.io/paysupport/Skyshoregroup/800_products/SKYSHORE_LUBS_5Y8uLm0On.png?updatedAt=1758273954034" alt="Skyshore Logo" width={150} height={50} />
                   </Link>
                 </div>
               </div>
@@ -110,28 +249,29 @@ const Header = () => {
                 <div className="header-right_area">
                   <ul>
                     <li className="mobile-menu_wrap d-flex d-lg-none">
-                      <button 
-                        className="mobile-menu_btn toolbar-btn color--white"
-                        onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                      >
+                      <a href="#mobileMenu" className="mobile-menu_btn toolbar-btn color--white">
                         <i className="ion-navicon"></i>
-                      </button>
+                      </a>
                     </li>
                     <li className="minicart-wrap">
-                        <Link href="#miniCart" className="minicart-btn toolbar-btn">
-                            <div className="minicart-count_area">
-                                <span className="item-count">3</span>
-                                <i className="ion-bag"></i>
-                            </div>
-                            <div className="minicart-front_text">
-                                <span>Cart:</span>
-                                <span className="total-price">462.5</span>
-                            </div>
+                        <CartIcon onClick={() => dispatch(openCart())} />
+                    </li>
+                    <li className="user-account_wrap">
+                      {isAuthenticated ? (
+                        <Link style={{color:'#fff'}} href={createLocaleUrl('/my-account')} className="user-account-btn">
+                          <i className="ion-person"></i>
+                          <span className="d-none d-md-inline">{t('myAccount')}</span>
                         </Link>
+                      ) : (
+                        <Link style={{color:'#fff'}} href={createLocaleUrl('/login')} className="user-account-btn">
+                          <i className="ion-log-in"></i>
+                          <span className="d-none d-md-inline">{t('login')}</span>
+                        </Link>
+                      )}
                     </li>
                     <li className="contact-us_wrap">
-                      <Link href="tel://+123123321345">
-                        <i className="ion-android-call"></i>+(234)811 322 0000
+                      <Link style={{fontSize:15}} href="tel://+2342092920777">
+                        <i className="ion-android-call"></i>(+234) 209 292 0777
                       </Link>
                     </li>
                   </ul>
@@ -147,8 +287,8 @@ const Header = () => {
             <div className="row">
               <div className="custom-logo_col col-12">
                 <div className="header-logo_area">
-                  <Link href="/">
-                    <Image src="/assets/images/menu/logo/logo_skylubs.png" style={{marginBottom:10}} alt="Skyshore Logo" width={300} height={50} />
+                  <Link href={createLocaleUrl('/')}>
+                    <Image src="https://ik.imagekit.io/paysupport/Skyshoregroup/800_products/Untitled%20design_gvGGW8E91.png?updatedAt=1758276736690" style={{position:'relative',bottom:1, marginBottom:3}}  width={250} height={70} alt="Skyshore Logo"  />
                   </Link>
                 </div>
               </div>
@@ -178,56 +318,73 @@ const Header = () => {
                         </ul>
                       </li> */}
                    
-                      <li><Link href="/shop">Engine Oil Parts</Link></li>
-                      <li><Link href="/shop">Diesel Oil</Link></li>
+                      <li><Link href={createLocaleUrl('/shop')}>Engine Oil </Link></li>
+                      <li><Link href={createLocaleUrl('/shop')}>Diesel Oil</Link></li>
                     </ul>
                   </div>
                 </div>
               </div>
               <div className="custom-search_col col-12">
-                <div className="hm-form_area">
-                  <form action="#" className="hm-searchbox">
-                    <select className="nice-select select-search-category">
-                      <option value="0">All Categories</option>
-                      <option value="10">Engine Oil </option>
-                      <option value="11">Diesel Oil</option>
-                      <option value="12">Gear Oil</option>
-                      <option value="13">Brake Fluid</option>
-                      <option value="14">Coolant</option>
-                    </select>
-                    <input type="text" placeholder="Enter your search key ..." />
+                <div className="hm-form_area" ref={searchRef}>
+                  <form onSubmit={handleSearchSubmit} className="hm-searchbox">
+                   
+                    <input 
+                      type="text" 
+                      placeholder={tHeader('searchPlaceholder')} 
+                      value={searchQuery}
+                      onChange={handleSearchChange}
+                    />
                     <button className="header-search_btn" type="submit">
-                      <i className="ion-ios-search-strong"><span>Search</span></i>
+                      <i className="ion-ios-search-strong"><span>{tHeader('search')}</span></i>
                     </button>
                   </form>
+                  
+                  {/* Search Suggestions Dropdown */}
+                  {showSuggestions && searchSuggestions.length > 0 && (
+                    <div className="search-suggestions">
+                      {searchSuggestions.map((product: Product) => {
+                        const productId = typeof product._id === 'string' ? product._id : product._id.$oid;
+                        return (
+                          <div 
+                            key={productId}
+                            className="suggestion-item"
+                            onClick={() => handleSuggestionClick(product)}
+                          >
+                            <div className="suggestion-image">
+                              <Image 
+                                src={product.images[0] || "/assets/images/product/small-size/1.jpg"} 
+                                alt={product.name}
+                                width={40}
+                                height={40}
+                                quality={95}
+                                style={{ objectFit: 'cover' }}
+                              />
+                            </div>
+                            <div className="suggestion-content">
+                              <div className="suggestion-name">{product.name}</div>
+                              <div className="suggestion-brand">{product.brand}</div>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
                 </div>
               </div>
               <div className="custom-cart_col col-12">
                 <div className="header-right_area">
                   <ul>
                     <li className="mobile-menu_wrap d-flex d-lg-none">
-                      <button 
-                        className="mobile-menu_btn toolbar-btn color--white"
-                        onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                      >
+                      <a href="#mobileMenu" className="mobile-menu_btn toolbar-btn color--white">
                         <i className="ion-navicon"></i>
-                      </button>
+                      </a>
                     </li>
                     <li className="minicart-wrap">
-                        <Link href="#miniCart" className="minicart-btn toolbar-btn">
-                            <div className="minicart-count_area">
-                                <span className="item-count">3</span>
-                                <i className="ion-bag"></i>
-                            </div>
-                            <div className="minicart-front_text">
-                                <span>Cart:</span>
-                                <span className="total-price">462.4</span>
-                            </div>
-                        </Link>
+                        <CartIcon onClick={() => dispatch(openCart())} />
                     </li>
                     <li className="contact-us_wrap">
-                      <Link href="tel://+123123321345">
-                        <i className="ion-android-call"></i>+(234)811 322 0000
+                      <Link style={{fontSize:14}} href="tel://+2342092920777">
+                        <i className="ion-android-call"></i>(+234) 209 292 0777
                       </Link>
                     </li>
                   </ul>
@@ -243,53 +400,17 @@ const Header = () => {
         <div className="offcanvas-menu-inner">
           <button 
             className="btn-close"
-            onClick={() => setIsMiniCartOpen(false)}
+            onClick={() => dispatch(closeCart())}
           >
             <i className="ion-android-close"></i>
           </button>
-          <div className="minicart-content">
-            <div className="minicart-heading">
-              <h4>Shopping Cart</h4>
-            </div>
-            <ul className="minicart-list">
-              <li className="minicart-product">
-                <button className="product-item_remove">
-                  <i className="ion-android-close"></i>
-                </button>
-                <div className="product-item_img">
-                  <Image src="/assets/images/product/small-size/1.jpg" alt="Product Image" width={80} height={80} />
-                </div>
-                <div className="product-item_content">
-                  <Link className="product-item_title" href="/product">Car Accessory 1</Link>
-                  <span className="product-item_quantity">1 x $145.80</span>
-                </div>
-              </li>
-              <li className="minicart-product">
-                <button className="product-item_remove">
-                  <i className="ion-android-close"></i>
-                </button>
-                <div className="product-item_img">
-                  <Image src="/assets/images/product/small-size/2.jpg" alt="Product Image" width={80} height={80} />
-                </div>
-                <div className="product-item_content">
-                  <Link className="product-item_title" href="/product">Car Accessory 2</Link>
-                  <span className="product-item_quantity">1 x $150.80</span>
-                </div>
-              </li>
-            </ul>
-          </div>
-          <div className="minicart-item_total">
-            <span>Subtotal</span>
-            <span className="ammount">$296.60</span>
-          </div>
-          <div className="minicart-btn_area">
-            <Link href="/cart" className="uren-btn uren-btn_dark uren-btn_fullwidth">View Cart</Link>
-          </div>
-          <div className="minicart-btn_area">
-            <Link href="/checkout" className="uren-btn uren-btn_dark uren-btn_fullwidth">Checkout</Link>
-          </div>
+      
+        
         </div>
+
+        <SideCart onClose={() => dispatch(closeCart())} />
       </div>
+      
 
       {/* Mobile Menu */}
       <div className={`mobile-menu_wrapper ${isMobileMenuOpen ? 'open' : ''}`} id="mobileMenu">
@@ -301,30 +422,61 @@ const Header = () => {
             >
               <i className="ion-android-close"></i>
             </button>
-            <div className="offcanvas-inner_search">
-              <form action="#" className="inner-searchbox">
-                <input type="text" placeholder="Search for item..." />
+            <div className="offcanvas-inner_search" ref={mobileSearchRef}>
+              <form onSubmit={handleMobileSearchSubmit} className="inner-searchbox">
+                <input type="text" placeholder="Search for item..." value={mobileSearchQuery} onChange={handleMobileSearchChange} />
                 <button className="search_btn" type="submit">
                   <i className="ion-ios-search-strong"></i>
                 </button>
               </form>
+              
+              {/* Mobile Search Suggestions Dropdown */}
+              {showMobileSuggestions && mobileSearchSuggestions.length > 0 && (
+                <div className="search-suggestions mobile-search-suggestions">
+                  {mobileSearchSuggestions.map((product: Product) => {
+                    const productId = typeof product._id === 'string' ? product._id : product._id.$oid;
+                    return (
+                      <div 
+                        key={productId}
+                        className="suggestion-item"
+                        onClick={() => handleMobileSuggestionClick(product)}
+                      >
+                        <div className="suggestion-image">
+                          <Image 
+                            src={product.images[0] || "/assets/images/product/small-size/1.jpg"} 
+                            alt={product.name}
+                            width={40}
+                            height={40}
+                            quality={95}
+                            style={{ objectFit: 'cover' }}
+                          />
+                        </div>
+                        <div className="suggestion-content">
+                          <div className="suggestion-name">{product.name}</div>
+                          <div className="suggestion-brand">{product.brand}</div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
             </div>
             <nav className="offcanvas-navigation">
               <ul className="mobile-menu">
-                <li className="menu-item-has-children active">
-                  <Link href="/"><span className="mm-text">Home</span></Link>
+                <li className={`menu-item-has-children ${getActiveClass('/')}`}>
+                  <Link href={createLocaleUrl('/')}><span className="mm-text">{t('home')}</span></Link>
                 </li>
-                <li className="menu-item-has-children">
-                  <Link href="/shop"><span className="mm-text">Shop</span></Link>
+                <li className={`menu-item-has-children ${getActiveClass('/shop')}`}>
+                  <Link href={createLocaleUrl('/shop')}><span className="mm-text">{t('shop')}</span></Link>
                 </li>
-                <li className="menu-item-has-children">
-                  <Link href="/blog"><span className="mm-text">Blog</span></Link>
+                <li className={`menu-item-has-children ${getActiveClass('/blog')}`}>
+                  <Link href={createLocaleUrl('/blog')}><span className="mm-text">{t('blog')}</span></Link>
                 </li>
-                <li className="menu-item-has-children">
-                  <Link href="/about"><span className="mm-text">About Us</span></Link>
+                <li className={`menu-item-has-children ${getActiveClass('/about')}`}>
+                  <Link href={createLocaleUrl('/about')}><span className="mm-text">{t('about')}</span></Link>
                 </li>
-                <li className="menu-item-has-children">
-                  <Link href="/contact"><span className="mm-text">Contact</span></Link>
+                <li className={`menu-item-has-children ${getActiveClass('/contact')}`}>
+                  <Link href={createLocaleUrl('/contact')}><span className="mm-text">{t('contact')}</span></Link>
                 </li>
               </ul>
             </nav>
