@@ -200,8 +200,17 @@ const Header = () => {
                       <li>
                         <Link style={{color:'#fff'}} href={createLocaleUrl('/my-account')}>{t('myAccount')}<i className="fa fa-chevron-down"></i></Link>
                         <ul className="ht-dropdown ht-my_account">
-                          <li><Link href={createLocaleUrl('/register')}>{t('register')}</Link></li>
-                          <li className="active"><Link href={createLocaleUrl('/login')}>{t('login')}</Link></li>
+                          {isAuthenticated ? (
+                            <>
+                              <li><Link href={createLocaleUrl('/my-account')}>Dashboard</Link></li>
+                              <li><Link href={createLocaleUrl('/order-history')}>Order History</Link></li>
+                            </>
+                          ) : (
+                            <>
+                              <li><Link href={createLocaleUrl('/register')}>{t('register')}</Link></li>
+                              <li className="active"><Link href={createLocaleUrl('/login')}>{t('login')}</Link></li>
+                            </>
+                          )}
                         </ul>
                       </li>
                     </ul>
@@ -260,7 +269,7 @@ const Header = () => {
                       {isAuthenticated ? (
                         <Link style={{color:'#fff'}} href={createLocaleUrl('/my-account')} className="user-account-btn">
                           <i className="ion-person"></i>
-                          <span className="d-none d-md-inline">{t('myAccount')}</span>
+                          <span className="d-none d-md-inline">Dashboard</span>
                         </Link>
                       ) : (
                         <Link style={{color:'#fff'}} href={createLocaleUrl('/login')} className="user-account-btn">

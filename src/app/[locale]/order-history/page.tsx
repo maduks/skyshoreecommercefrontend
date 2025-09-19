@@ -4,17 +4,40 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useAppSelector, useAppDispatch } from '@/store/hooks';
+import { useCurrentLocale } from '@/hooks/useCurrentLocale';
 import { getUserOrders } from '@/store/slices/orderSlice';
 import { logout as logoutUser } from '@/store/slices/userSlice';
+
+// Interface for order items with product details
+interface OrderItemWithProduct {
+  product: {
+    _id: string;
+    name: string;
+    images: string[];
+  };
+  quantity: number;
+}
+
+// Interface for order items with product ID only
+interface OrderItemWithId {
+  product: string;
+  quantity: number;
+}
 
 const OrderHistoryPage = () => {
   const router = useRouter();
   const dispatch = useAppDispatch();
+  const currentLocale = useCurrentLocale();
   const { user, isAuthenticated, token } = useAppSelector((state) => state.user);
   const { orders, loading } = useAppSelector((state) => state.order);
   const [selectedOrder, setSelectedOrder] = useState<string | null>(null);
   const [filterStatus, setFilterStatus] = useState<string>('all');
   const [activeTab, setActiveTab] = useState('order-history');
+  
+  // Helper function to create locale-aware URLs
+  const createLocaleUrl = (path: string) => {
+    return `/${currentLocale}${path}`;
+  };
 
   // Load user orders when component mounts
   useEffect(() => {
@@ -46,18 +69,18 @@ const OrderHistoryPage = () => {
     }
   };
 
-  const getStatusIcon = (status: string) => {
-    switch (status) {
-      case 'delivered':
-        return <i className="ion-checkmark-circled text-success"></i>;
-      case 'processing':
-        return <i className="ion-clock text-warning"></i>;
-      case 'pending':
-        return <i className="ion-alert text-danger"></i>;
-      default:
-        return <i className="ion-help text-secondary"></i>;
-    }
-  };
+  // const getStatusIcon = (status: string) => {
+  //   switch (status) {
+  //     case 'delivered':
+  //       return <i className="ion-checkmark-circled text-success"></i>;
+  //     case 'processing':
+  //       return <i className="ion-clock text-warning"></i>;
+  //     case 'pending':
+  //       return <i className="ion-alert text-danger"></i>;
+  //     default:
+  //       return <i className="ion-help text-secondary"></i>;
+  //   }
+  // };
 
   const formatPrice = (price: number) => {
     return `₦${price.toLocaleString()}`;
@@ -87,24 +110,25 @@ const OrderHistoryPage = () => {
   const selectedOrderData = orders.find(order => order._id === selectedOrder);
 
   return (
-    <div className="main-content_wrapper">
-      <div className="breadcrumb-area breadcrumb-height">
-        <div className="container h-100">
-          <div className="row h-100">
-            <div className="col-lg-12">
-              <div className="breadcrumb-item">
-                <h2 className="breadcrumb-heading">My Account</h2>
-                <ul>
-                  <li>
-                    <Link href="/">Home</Link>
-                  </li>
-                  <li>My Account</li>
-                </ul>
+    <>
+      <div className="main-content_wrapper">
+        <div className="breadcrumb-area breadcrumb-height">
+          <div className="container h-100">
+            <div className="row h-100">
+              <div className="col-lg-12">
+                <div className="breadcrumb-item">
+                  <h2 className="breadcrumb-heading">My Account</h2>
+                  <ul>
+                    <li>
+                      <Link href={createLocaleUrl('/')}>Home</Link>
+                    </li>
+                    <li>My Account</li>
+                  </ul>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
 
       <div className="account-area section-space-y-axis-100">
         <div className="container">
@@ -129,7 +153,7 @@ const OrderHistoryPage = () => {
                   <ul>
                     <li>
                       <Link 
-                        href="/my-account" 
+                        href={createLocaleUrl('/my-account')} 
                         className={activeTab === 'dashboard' ? 'active' : ''}
                         onClick={() => setActiveTab('dashboard')}
                       >
@@ -138,7 +162,7 @@ const OrderHistoryPage = () => {
                     </li>
                     <li>
                       <Link 
-                        href="/my-account" 
+                        href={createLocaleUrl('/my-account')} 
                         className={activeTab === 'profile' ? 'active' : ''}
                         onClick={() => setActiveTab('profile')}
                       >
@@ -147,7 +171,7 @@ const OrderHistoryPage = () => {
                     </li>
                     <li>
                       <Link 
-                        href="/order-history" 
+                        href={createLocaleUrl('/order-history')} 
                         className="active"
                       >
                         <i className="ion-bag"></i> Order History
@@ -155,7 +179,7 @@ const OrderHistoryPage = () => {
                     </li>
                     <li>
                       <Link 
-                        href="/my-account" 
+                        href={createLocaleUrl('/my-account')} 
                         className={activeTab === 'security' ? 'active' : ''}
                         onClick={() => setActiveTab('security')}
                       >
@@ -220,7 +244,7 @@ const OrderHistoryPage = () => {
                   </div>
                 ) : filteredOrders.length > 0 ? (
                   <div className="row">
-                    <div className="col-lg-8">
+                    <div className="col-lg-7">
                       <div className="order-list">
                         {filteredOrders.map((order) => (
                           <div key={order._id} className="order-item">
@@ -261,7 +285,7 @@ const OrderHistoryPage = () => {
                         ))}
                       </div>
                     </div>
-                    <div className="col-lg-4">
+                    <div className="col-lg-5">
                       {selectedOrderData ? (
                         <div className="order-details">
                           <h4>Order Details</h4>
@@ -284,10 +308,20 @@ const OrderHistoryPage = () => {
 
                             <div className="info-section">
                               <h6>Order Items</h6>
-                              {selectedOrderData.orderItems.map((item: { product: string; quantity: number }, index: number) => (
+                              {selectedOrderData.orderItems.map((item: OrderItemWithProduct | OrderItemWithId, index: number) => (
                                 <div key={index} className="order-item-detail">
-                                  <span>Product ID: {item.product}</span>
-                                  <span>Qty: {item.quantity}</span>
+                                  <div className="d-flex justify-content-between align-items-center">
+                                    <div>
+                                      <span className="product-name">
+                                        {typeof item.product === 'string' ? `Product ID: ${item.product}` : item.product.name}
+                                      </span>
+                                      <br />
+                                      <small className="text-muted">
+                                        {typeof item.product === 'string' ? '' : `ID: ${item.product._id}`}
+                                      </small>
+                                    </div>
+                                    <span className="quantity-badge">Qty: {item.quantity}</span>
+                                  </div>
                                 </div>
                               ))}
                             </div>
@@ -365,7 +399,7 @@ const OrderHistoryPage = () => {
                     <i className="ion-bag" style={{fontSize: '64px', color: '#ccc'}}></i>
                     <h4>No Orders Found</h4>
                     <p>You haven&apos;t placed any orders yet.</p>
-                    <Link href="/shop" className="btn btn-primary">Start Shopping</Link>
+                    <Link href={createLocaleUrl('/shop')} className="btn btn-primary">Start Shopping</Link>
                   </div>
                 )}
               </div>
@@ -374,6 +408,36 @@ const OrderHistoryPage = () => {
         </div>
       </div>
     </div>
+
+    <style jsx>{`
+      .order-item-detail {
+        padding: 12px;
+        border: 1px solid #e9ecef;
+        border-radius: 6px;
+        margin-bottom: 8px;
+        background: #f8f9fa;
+      }
+      
+      .product-name {
+        font-weight: 600;
+        color: #333;
+      }
+      
+      .quantity-badge {
+        background: #007bff;
+        color: white;
+        padding: 4px 8px;
+        border-radius: 12px;
+        font-size: 12px;
+        font-weight: 500;
+      }
+      
+      .order-item-detail:hover {
+        background: #e9ecef;
+        border-color: #007bff;
+      }
+    `}</style>
+    </>
   );
 };
 

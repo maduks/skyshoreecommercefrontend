@@ -3,14 +3,22 @@
 import React, { useEffect } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
-import { useAppDispatch } from '@/store/hooks';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { clearCart } from '@/store/slices/cartSlice';
+import { useCurrentLocale } from '@/hooks/useCurrentLocale';
 
 const OrderSuccessPage = () => {
   const dispatch = useAppDispatch();
+  const currentLocale = useCurrentLocale();
   const searchParams = useSearchParams();
   const orderId = searchParams.get('orderId');
   const orderTotal = searchParams.get('total');
+  const { isAuthenticated } = useAppSelector((state: any) => state.user);
+  
+  // Helper function to create locale-aware URLs
+  const createLocaleUrl = (path: string) => {
+    return `/${currentLocale}${path}`;
+  };
 
   // Clear cart when order success page loads
   useEffect(() => {
@@ -25,7 +33,7 @@ const OrderSuccessPage = () => {
           <div className="breadcrumb-content">
             <h2>ORDER SUCCESS</h2>
             <ul>
-              <li><Link href="/">Home</Link></li>
+              <li><Link href={createLocaleUrl('/')}>Home</Link></li>
               <li className="active">Order Success</li>
             </ul>
           </div>
@@ -118,9 +126,21 @@ const OrderSuccessPage = () => {
                 {/* Action Buttons */}
                 <div className="action-buttons">
                   <div className="row">
-                    <div className="col-md-6 mb-3">
+                    {isAuthenticated && (
+                      <div className="col-md-4 mb-3">
+                        <Link 
+                          href={createLocaleUrl('/my-account')} 
+                          className="btn btn-primary btn-lg btn-block"
+                          style={{ width: '100%' }}
+                        >
+                          <i className="ion-person mr-2"></i>
+                          View Dashboard
+                        </Link>
+                      </div>
+                    )}
+                    <div className="col-md-4 mb-3">
                       <Link 
-                        href="/shop" 
+                        href={createLocaleUrl('/shop')} 
                         className="btn btn-warning btn-lg btn-block"
                         style={{ width: '100%' }}
                       >
@@ -128,9 +148,9 @@ const OrderSuccessPage = () => {
                         Continue Shopping
                       </Link>
                     </div>
-                    <div className="col-md-6 mb-3">
+                    <div className="col-md-4 mb-3">
                       <Link 
-                        href="/" 
+                        href={createLocaleUrl('/')} 
                         className="btn btn-danger btn-lg btn-block"
                         style={{ width: '100%' }}
                       >
@@ -148,7 +168,7 @@ const OrderSuccessPage = () => {
                      <p className="mb-2">
                        If you have any questions about your order, please don&apos;t hesitate to contact us.
                      </p>
-                    <Link href="/contact" className="btn btn-sm btn-outline-info">
+                    <Link href={createLocaleUrl('/contact')} className="btn btn-sm btn-outline-info">
                       Contact Support
                     </Link>
                   </div>

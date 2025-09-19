@@ -3,16 +3,23 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useAppSelector, useAppDispatch } from '@/store/hooks';
+import { useCurrentLocale } from '@/hooks/useCurrentLocale';
 import { logout } from '@/store/slices/userSlice';
 import { getUserOrders } from '@/store/slices/orderSlice';
 import { RootState } from '@/store/store';
 
 const MyAccountPage = () => {
   const dispatch = useAppDispatch();
+  const currentLocale = useCurrentLocale();
   const { user, isAuthenticated, token } = useAppSelector((state) => state.user);
   const { orders, loading: ordersLoading } = useAppSelector((state: RootState) => state.order);
-  const { items: wishlistItems } = useAppSelector((state: RootState) => state.wishlist);
+  // const { items: wishlistItems } = useAppSelector((state: RootState) => state.wishlist);
   const [activeTab, setActiveTab] = useState('dashboard');
+  
+  // Helper function to create locale-aware URLs
+  const createLocaleUrl = (path: string) => {
+    return `/${currentLocale}${path}`;
+  };
 
   // Fetch user orders when component mounts and user is authenticated
   useEffect(() => {
@@ -47,22 +54,24 @@ const MyAccountPage = () => {
           <div className="col-md-4">
             <div className="stat-card">
               <div className="stat-icon">
-                <i className="ion-heart"></i>
+                <i className="ion-cash"></i>
               </div>
               <div className="stat-info">
-                <h5>Wishlist Items</h5>
-                <span>{wishlistItems.length}</span>
+                <h5>Total Spent</h5>
+                <span>
+                  {ordersLoading ? '...' : `₦${orders.reduce((total, order) => total + order.totalPrice, 0).toLocaleString()}`}
+                </span>
               </div>
             </div>
           </div>
           <div className="col-md-4">
             <div className="stat-card">
               <div className="stat-icon">
-                <i className="ion-star"></i>
+                <i className="ion-person"></i>
               </div>
               <div className="stat-info">
-                <h5>Reviews</h5>
-                <span>0</span>
+                <h5>Account Status</h5>
+                <span className="text-success">Active</span>
               </div>
             </div>
           </div>
@@ -122,7 +131,7 @@ const MyAccountPage = () => {
                       </span>
                     </td>
                     <td>₦{order.totalPrice.toLocaleString()}</td>
-                    <td><Link href={`/order-history`} className="btn btn-sm btn-primary">View</Link></td>
+                    <td><Link href={createLocaleUrl('/order-history')} className="btn btn-sm btn-primary">View</Link></td>
                   </tr>
                 ))
               ) : (
@@ -355,7 +364,7 @@ const MyAccountPage = () => {
               <div className="text-center py-5">
                 <h3>Please Login to Access Your Account</h3>
                 <p>You need to be logged in to view your account information.</p>
-                <Link href="/login" className="btn btn-primary">Login</Link>
+                <Link href={createLocaleUrl('/login')} className="btn btn-primary">Login</Link>
               </div>
             </div>
           </div>
@@ -382,13 +391,14 @@ const MyAccountPage = () => {
   }
 
   return (
-    <div className="main-content_wrapper">
+    <>
+      <div className="main-content_wrapper">
        <div className="breadcrumb-area">
         <div className="container">
           <div className="breadcrumb-content">
             <h2>My Account</h2>
             <ul>
-              <li><Link href="/">Home</Link></li>
+              <li><Link href={createLocaleUrl('/')}>Home</Link></li>
               <li className="active">My Account</li>
             </ul>
           </div>
@@ -436,13 +446,8 @@ const MyAccountPage = () => {
                       </button>
                     </li>
                     <li>
-                      <Link href="/order-history">
+                      <Link href={createLocaleUrl('/order-history')}>
                         <i className="ion-bag"></i> Order History
-                      </Link>
-                    </li>
-                    <li>
-                      <Link href="/wishlist">
-                        <i className="ion-heart"></i> Wishlist
                       </Link>
                     </li>
                                       <li>
@@ -467,6 +472,68 @@ const MyAccountPage = () => {
         </div>
       </div>
     </div>
+
+    <style jsx>{`
+      .stat-card {
+        background: #fff;
+        border-radius: 12px;
+        padding: 24px;
+        box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+        border: 1px solid #f0f0f0;
+        transition: all 0.3s ease;
+        height: 100%;
+      }
+      
+      .stat-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+      }
+      
+      .stat-icon {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 16px;
+        font-size: 24px;
+        color: #fff;
+      }
+      
+      .stat-card:nth-child(1) .stat-icon {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      }
+      
+      .stat-card:nth-child(2) .stat-icon {
+        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+      }
+      
+      .stat-card:nth-child(3) .stat-icon {
+        background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+      }
+      
+      .stat-info h5 {
+        font-size: 14px;
+        font-weight: 600;
+        color: #666;
+        margin-bottom: 8px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+      
+      .stat-info span {
+        font-size: 28px;
+        font-weight: 700;
+        color: #333;
+        display: block;
+      }
+      
+      .text-success {
+        color: #28a745 !important;
+      }
+    `}</style>
+    </>
   );
 };
 
