@@ -40,5 +40,5 @@ jobs:
           server: ${{ secrets.CICDLUBS_FTP_SERVER }}
           username: ${{ secrets.CICDLUBS_FTP_USERNAME }}
           password: ${{ secrets.CICDLUBS_FTPPASSWORD }}
-          server-dir: /skyshorelubs.com/
+          server-dir: /
           exclude: .git/*
