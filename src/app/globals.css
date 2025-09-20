@@ -1398,6 +1398,351 @@
 /* Prevent navigation issues */
 .main-wrapper {
   overflow-x: hidden;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Ensure proper body padding */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Work Sans', sans-serif;
+  line-height: 1.6;
+  color: #333;
+}
+
+/* Main content area padding */
+.main-content_wrapper {
+  flex: 1;
+  padding-top: 0;
+}
+
+/* Ensure pages have proper spacing */
+.page-content {
+  padding: 20px 0;
+}
+
+/* Container padding for better spacing */
+.container {
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+/* Hero Slider specific styles */
+.hero-slider {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+.hero-slider .slick-slide {
+  position: relative;
+  height: 100vh;
+  min-height: 500px;
+}
+
+.hero-slider .slick-slide > div {
+  height: 100%;
+}
+
+/* Ensure proper spacing for all sections */
+.section-space {
+  padding: 60px 0;
+}
+
+.section-space-y-axis-100 {
+  padding: 100px 0;
+}
+
+/* Breadcrumb area padding - preserve background image */
+.breadcrumb-area {
+  padding: 60px 0;
+  /* Don't override the background image from main CSS */
+  /* background: #f8f9fa; */
+  position: relative;
+  min-height: 225px;
+  display: flex;
+  align-items: center;
+}
+
+/* Ensure breadcrumb content is properly positioned */
+.breadcrumb-area .breadcrumb-content {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  z-index: 2;
+}
+
+/* Breadcrumb heading styles */
+.breadcrumb-area .breadcrumb-content > h2 {
+  font-weight: 700;
+  color: #ffffff;
+  text-transform: uppercase;
+  text-align: center;
+  font-size: 36px;
+  margin-bottom: 15px;
+}
+
+/* Breadcrumb list styles */
+.breadcrumb-area .breadcrumb-content ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.breadcrumb-area .breadcrumb-content ul > li {
+  color: #ffffff;
+  display: inline-block;
+  padding-left: 20px;
+  position: relative;
+}
+
+.breadcrumb-area .breadcrumb-content ul > li:first-child {
+  padding-left: 0;
+}
+
+.breadcrumb-area .breadcrumb-content ul > li:before {
+  content: "\f054";
+  font-family: 'Font Awesome 5 Free';
+  font-weight: 600;
+  position: absolute;
+  right: -15px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.breadcrumb-area .breadcrumb-content ul > li:last-child:before {
+  display: none;
+}
+
+.breadcrumb-area .breadcrumb-content ul > li > a {
+  color: #ffffff;
+  text-decoration: none;
+}
+
+.breadcrumb-area .breadcrumb-content ul > li > a:hover {
+  color: #ffc400;
+}
+
+/* Account area padding */
+.account-area {
+  padding: 60px 0;
+  background: #f8f9fa;
+}
+
+/* Override any conflicting styles from main CSS */
+body {
+  margin: 0 !important;
+  padding: 0 !important;
+  font-family: 'Work Sans', sans-serif !important;
+  line-height: 1.6 !important;
+  color: #333 !important;
+}
+
+/* Ensure main wrapper has proper structure */
+.main-wrapper {
+  overflow-x: hidden !important;
+  min-height: 100vh !important;
+  display: flex !important;
+  flex-direction: column !important;
+  width: 100% !important;
+}
+
+/* Ensure all pages have proper spacing */
+.page-content,
+.main-content_wrapper {
+  flex: 1 !important;
+  padding-top: 0 !important;
+  width: 100% !important;
+}
+
+/* Ensure proper spacing for all sections */
+.section-space,
+.section-space-y-axis-100,
+.uren-new-arrivals_area,
+.uren-shipping_area,
+.uren-banner_area,
+.uren-deal-of-the-day_area,
+.uren-popular-search_area,
+.uren-blog_area {
+  padding: 60px 0 !important;
+}
+
+/* Hero slider should not have extra padding - let it use its natural spacing */
+.uren-slider_area {
+  /* Remove extra padding that was causing gap between header and slider */
+  padding: 0 !important;
+  margin-top: 0 !important;
+}
+
+/* Ensure no gap between header and slider */
+.header-middle_area {
+  margin-bottom: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+/* Ensure slider starts immediately after header */
+.main-wrapper {
+  overflow-x: hidden !important;
+  min-height: 100vh !important;
+  display: flex !important;
+  flex-direction: column !important;
+  width: 100% !important;
+}
+
+/* Remove any default margins that might cause gaps */
+.uren-slider_area .main-slider {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+/* Header alignment - ensure all elements are horizontally centered */
+.header-top_area .row {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  min-height: 60px !important;
+}
+
+.header-top_area .col-xl-8,
+.header-top_area .col-xl-4 {
+  display: flex !important;
+  align-items: center !important;
+}
+
+.header-top_area .main-menu_area {
+  display: flex !important;
+  /* align-items: center !important; */
+  /* justify-content: center !important; */
+  height: 100% !important;
+  flex: 1 !important;
+}
+
+.header-top_area .header-right_area {
+  display: flex !important;
+  align-items: center !important;
+  height: 100% !important;
+  justify-content: flex-end !important;
+}
+
+.header-top_area .header-right_area > ul {
+  display: flex !important;
+  align-items: center !important;
+  height: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  gap: 15px !important;
+}
+
+.header-top_area .header-right_area > ul > li {
+  display: flex !important;
+  align-items: center !important;
+  height: 100% !important;
+}
+
+/* Ensure phone number and cart are properly aligned */
+.header-top_area .header-right_area > ul > li > a {
+  display: flex !important;
+  align-items: center !important;
+  height: 100% !important;
+  padding: 15px 10px !important;
+  white-space: nowrap !important;
+}
+
+/* Middle header - center the logo */
+.header-middle_area .row {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-height: 80px !important;
+  padding-bottom: 30px;
+}
+
+
+@media (max-width: 479px) {
+  .header-middle_area .header-logo_area {
+      text-align: center;
+  }
+
+  .header-middle_area .header-logo_area {
+    display: flex !important;
+    height: 100% !important;
+    align-items: center;
+    width: 100% !important;
+    justify-content: center !important;
+    margin-left: 33px !important;
+  }
+  
+}
+
+@media (max-width: 767px) {
+  .bg-1,.bg-2,.bg-3 {
+      margin-top: 5px;
+      min-height: 380px;
+      background-size: cover !important;
+  }
+}
+
+
+
+
+@media (max-width: 767px) {
+  .header-right_area > ul > li.minicart-wrap {
+   
+      align-self: center !important;
+  }
+}
+
+.header-middle_area .header-logo_area {
+  display: flex !important;
+  /* align-items: center !important;
+  justify-content: center !important; */
+  height: 100% !important;
+  width: 100% !important;
+}
+
+.header-middle_area .header-logo_area a {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  height: 100% !important;
+}
+
+/* Ensure logo is properly aligned in sticky header */
+.header-top_area .header-sticky_logo {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  height: 100% !important;
+}
+
+.header-top_area .header-sticky_logo a {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  height: 100% !important;
+}
+
+/* Ensure container has proper padding */
+.container,
+.container-fluid {
+  padding-left: 15px !important;
+  padding-right: 15px !important;
+}
+
+@media (max-width: 1599px) {
+  .container-fluid {
+    padding: 0 30px !important;
+  }
+}
+
+@media (max-width: 1199px) {
+  .container-fluid {
+    padding: 0 15px !important;
+  }
 }
 
 /* Simple countdown fix */

@@ -251,7 +251,7 @@ const Header = () => {
               <div className="col-sm-3 d-block d-lg-none">
                 <div className="header-logo_area header-sticky_logo">
                   <Link href={createLocaleUrl('/')}>
-                    <Image src="https://ik.imagekit.io/paysupport/Skyshoregroup/800_products/SKYSHORE_LUBS_5Y8uLm0On.png?updatedAt=1758273954034" alt="Skyshore Logo" width={150} height={50} />
+                    <Image src="https://ik.imagekit.io/paysupport/Skyshoregroup/800_products/Untitled%20design%20(1)_4u0CemLCM.png?updatedAt=1758298202967" alt="Skyshore Logo" width={150} height={50} />
                   </Link>
                 </div>
               </div>
@@ -298,7 +298,7 @@ const Header = () => {
               <div className="custom-logo_col col-12">
                 <div className="header-logo_area">
                   <Link href={createLocaleUrl('/')}>
-                    <Image src="https://ik.imagekit.io/paysupport/Skyshoregroup/800_products/Untitled%20design_gvGGW8E91.png?updatedAt=1758276736690" style={{position:'relative',bottom:1, marginBottom:3}}  width={250} height={70} alt="Skyshore Logo"  />
+                    <Image src="https://ik.imagekit.io/paysupport/Skyshoregroup/800_products/Untitled%20design%20(1)_4u0CemLCM.png?updatedAt=1758298202967" style={{position:'relative',bottom:1, marginBottom:3}}  width={250} height={70} alt="Skyshore Logo"  />
                   </Link>
                 </div>
               </div>
