@@ -225,12 +225,12 @@ const Header = () => {
 
   { /* Mobile Header lang */}
 
-  <div className="header-top_area_lang  header-top_area   d-lg-block d-none">
-          <div className="container-fluid">
+  <div style={{padding:0, maxHeight:30}}  className="header-top_area_lang  header-top_area   d-lg-block d-none">
+          <div className="container-fluid" >
             <div className="row">
               <div className="col-xl-5 col-lg-4">
                 <div className="ht-right_area">
-                  <div className="ht-menu">
+                  <div style={{maxHeight:10}} className="ht-menu">
                     <ul>
                      <LanguageSwitcher />
                       <li>

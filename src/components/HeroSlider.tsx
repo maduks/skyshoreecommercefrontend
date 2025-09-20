@@ -121,7 +121,7 @@ const HeroSlider = () => {
                 <div className="slider-content slider-content-2">
                   <span className="primary-text_color">Premium Protection, Peak Performance</span>
                   <h3>Engine <br/>Essentials</h3>
-                  <h4>Lubricantion you can trust</h4>
+                  <h4>Lubrication you can trust</h4>
                   <div className="uren-btn-ps_left slide-btn">
                     <Link className="uren-btn" href={createLocaleUrl('/shop')}>Read More</Link>
                   </div>
@@ -131,9 +131,9 @@ const HeroSlider = () => {
                {/* Third Slide */}
                <div className="single-slide animation-style-02 bg-3">
                 <div className="slider-content slider-content-2">
-                  <span className="primary-text_color">Premium Protection, Peak Performance</span>
-                  <h3>Engine <br/>Essentials</h3>
-                  <h4>Lubricantion you can trust</h4>
+                  <span className="primary-text_color">Trusted Quality, Proven Results</span>
+                  <h3>Performance <br/>Oils</h3>
+                  <h4>Engineered for every journey</h4>
                   <div className="uren-btn-ps_left slide-btn">
                     <Link className="uren-btn" href={createLocaleUrl('/shop')}>Read More</Link>
                   </div>

@@ -1684,6 +1684,15 @@ body {
       min-height: 380px;
       background-size: cover !important;
   }
+
+  .header-logo_area > a >img{
+    height: 60px;
+    width: 250px;
+  }
+
+  .header-right_area > ul{
+    max-height: 10;
+  }
 }
 
 

@@ -5687,6 +5687,11 @@ button, .global-overlay, .quantity .cart-plus-minus > .qtybutton, .price-filter 
     color: #ffffff;
     font-size: 60px;
   }
+
+
+  /* .category-menu .category-heading {
+    display: none !important;
+} */
 }
 
 .header-right_area > ul > li.minicart-wrap {
@@ -5938,7 +5943,7 @@ button, .global-overlay, .quantity .cart-plus-minus > .qtybutton, .price-filter 
         -ms-flex: 0 0 30%;
             flex: 0 0 30%;
     max-width: 30%;
-    padding-bottom: 0px;
+    padding-bottom: -40px;
   }
 }
 
@@ -6091,7 +6096,7 @@ button, .global-overlay, .quantity .cart-plus-minus > .qtybutton, .price-filter 
         -ms-flex: 0 0 70%;
             flex: 0 0 70%;
     max-width: 70%;
-    padding-bottom: 30px;
+    /* padding-bottom: 30px; */
   }
 }
 
