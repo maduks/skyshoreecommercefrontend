@@ -132,6 +132,11 @@ const Header = () => {
     }
   };
 
+  // Handle mobile menu close when navigation link is clicked
+  const handleMobileMenuClose = () => {
+    setIsMobileMenuOpen(false);
+  };
+
   // Close suggestions when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -511,19 +516,19 @@ const Header = () => {
             <nav className="offcanvas-navigation">
               <ul className="mobile-menu">
                 <li className={`menu-item-has-children ${getActiveClass('/')}`}>
-                  <Link href={createLocaleUrl('/')}><span className="mm-text">{t('home')}</span></Link>
+                  <Link href={createLocaleUrl('/')} onClick={handleMobileMenuClose}><span className="close-menu mm-text">{t('home')}</span></Link>
                 </li>
                 <li className={`menu-item-has-children ${getActiveClass('/shop')}`}>
-                  <Link href={createLocaleUrl('/shop')}><span className="mm-text">{t('shop')}</span></Link>
+                  <Link href={createLocaleUrl('/shop')} onClick={handleMobileMenuClose}><span className="close-menu mm-text">{t('shop')}</span></Link>
                 </li>
                 <li className={`menu-item-has-children ${getActiveClass('/blog')}`}>
-                  <Link href={createLocaleUrl('/blog')}><span className="mm-text">{t('blog')}</span></Link>
+                  <Link href={createLocaleUrl('/blog')} onClick={handleMobileMenuClose}><span className="close-menu mm-text">{t('blog')}</span></Link>
                 </li>
                 <li className={`menu-item-has-children ${getActiveClass('/about')}`}>
-                  <Link href={createLocaleUrl('/about')}><span className="mm-text">{t('about')}</span></Link>
+                  <Link href={createLocaleUrl('/about')} onClick={handleMobileMenuClose}><span className="close-menu mm-text">{t('about')}</span></Link>
                 </li>
                 <li className={`menu-item-has-children ${getActiveClass('/contact')}`}>
-                  <Link href={createLocaleUrl('/contact')}><span className="mm-text">{t('contact')}</span></Link>
+                  <Link href={createLocaleUrl('/contact')} onClick={handleMobileMenuClose}><span className="close-menu mm-text">{t('contact')}</span></Link>
                 </li>
               </ul>
             </nav>

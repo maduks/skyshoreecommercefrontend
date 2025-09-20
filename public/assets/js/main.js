@@ -112,6 +112,16 @@
         $this.parents(".open").removeClass("open");
       });
 
+    $(".close-menu")
+      .off("click")
+      .on("click", function (e) {
+        // e.preventDefault();
+        var $this = $(this);
+        setTimeout(function () {
+          $this.parents(".open").removeClass("open");
+        }, 1000);
+      });
+
     /*----------------------------------------*/
     /* Uren's Offcanvas
 /*----------------------------------------*/
