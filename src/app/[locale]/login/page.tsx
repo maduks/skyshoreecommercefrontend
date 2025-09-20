@@ -7,6 +7,7 @@ import { useTranslations } from 'next-intl';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { loginUser, clearError } from '@/store/slices/userSlice';
 import Notification from '@/components/Notification';
+import { useCurrentLocale } from '@/hooks/useCurrentLocale';
 
 const LoginPage = () => {
   const dispatch = useAppDispatch();
@@ -20,6 +21,10 @@ const LoginPage = () => {
     password: ''
   });
   
+  const currentLocale = useCurrentLocale();
+  const createLocaleUrl = (path: string) => {
+    return `/${currentLocale}${path}`;
+  };
   const [notification, setNotification] = useState<{
     message: string;
     type: 'success' | 'error' | 'info';
@@ -36,7 +41,8 @@ const LoginPage = () => {
   // Redirect if already authenticated
   useEffect(() => {
     if (isAuthenticated && user) {
-      router.push('/my-account');
+
+      router.push(createLocaleUrl('/my-account'));
     }
   }, [isAuthenticated, user, router]);
 
@@ -96,7 +102,8 @@ const LoginPage = () => {
 
       // Redirect after successful login
       setTimeout(() => {
-        router.push('/my-account');
+
+        router.push(createLocaleUrl('/my-account'));
       }, 1500);
 
     } catch (error) {
@@ -120,7 +127,7 @@ const LoginPage = () => {
           <div className="breadcrumb-content">
             <h2>{t('title')}</h2>
             <ul>
-              <li><Link href="/">{tNav('home')}</Link></li>
+              <li><Link href={createLocaleUrl('/')}>{tNav('home')}</Link></li>
               <li className="active">{t('breadcrumb')}</li>
             </ul>
           </div>
@@ -199,7 +206,7 @@ const LoginPage = () => {
                         {t('rememberMe')}
                       </label>
                     </div>
-                    <Link href="/forgot-password" className="forgot-password-link">
+                      <Link href={createLocaleUrl('/forgot-password')} className="forgot-password-link">
                       Forgot password?
                     </Link>
                   </div>
@@ -224,7 +231,7 @@ const LoginPage = () => {
                 <div className="login-form-footer">
                   <p>
                     {t('dontHaveAccount')}{' '}
-                    <Link href="/register" className="register-link">
+                    <Link href={createLocaleUrl('/register')} className="register-link">
                       {t('signUp')}
                     </Link>
                   </p>

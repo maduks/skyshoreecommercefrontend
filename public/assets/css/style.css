@@ -944,6 +944,26 @@ button, .global-overlay, .quantity .cart-plus-minus > .qtybutton, .price-filter 
   z-index: 9999999;
 }
 
+.header-top_area_lang {
+  display: none !important; /*Dont show on non-mobile */
+  align-self: center !important;
+  justify-self: center !important;
+}
+@media (max-width: 991px) {
+  .header-top_area_lang {
+    display: block !important; /*Show on mobile */
+  }
+  .header-top_area_lang .ht-menu {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+  }
+  
+  .header-top_area_lang .ht-menu > ul {
+    display: flex !important;
+    gap: 15px !important;
+  }
+}
 @media (max-width: 991px) {
   .popup_wrapper {
     display: none;
@@ -5671,7 +5691,7 @@ button, .global-overlay, .quantity .cart-plus-minus > .qtybutton, .price-filter 
 
 .header-right_area > ul > li.minicart-wrap {
   background: #ffffff;
-  width: 42%;
+  width: 50%;
   text-align: center;
   height: 55px;
   line-height: 55px;
@@ -5918,7 +5938,7 @@ button, .global-overlay, .quantity .cart-plus-minus > .qtybutton, .price-filter 
         -ms-flex: 0 0 30%;
             flex: 0 0 30%;
     max-width: 30%;
-    padding-bottom: 30px;
+    padding-bottom: 0px;
   }
 }
 

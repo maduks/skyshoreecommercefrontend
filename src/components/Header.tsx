@@ -168,7 +168,7 @@ const Header = () => {
       {/* Header Main Area */}
       <header className="header-main_area bg--sapphire">
         {/* Top Header */}
-        <div className="header-top_area d-lg-block d-none">
+        <div className="header-top_area   d-lg-block d-none">
           <div className="container-fluid">
             <div className="row">
               <div className="col-xl-7 col-lg-8">
@@ -222,11 +222,47 @@ const Header = () => {
           </div>
         </div>
 
+
+  { /* Mobile Header lang */}
+
+  <div className="header-top_area_lang  header-top_area   d-lg-block d-none">
+          <div className="container-fluid">
+            <div className="row">
+              <div className="col-xl-5 col-lg-4">
+                <div className="ht-right_area">
+                  <div className="ht-menu">
+                    <ul>
+                     <LanguageSwitcher />
+                      <li>
+                        <Link style={{color:'#fff'}} href={createLocaleUrl('/my-account')}>{t('myAccount')}<i className="fa fa-chevron-down"></i></Link>
+                        <ul className="ht-dropdown ht-my_account">
+                          {isAuthenticated ? (
+                            <>
+                              <li><Link href={createLocaleUrl('/my-account')}>Dashboard</Link></li>
+                              <li><Link href={createLocaleUrl('/order-history')}>Order History</Link></li>
+                            </>
+                          ) : (
+                            <>
+                              <li><Link href={createLocaleUrl('/register')}>{t('register')}</Link></li>
+                              <li className="active"><Link href={createLocaleUrl('/login')}>{t('login')}</Link></li>
+                            </>
+                          )}
+                        </ul>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+
         {/* Sticky Header */}
         <div className="header-top_area header-sticky bg--sapphire">
           <div className="container-fluid">
             <div className="row">
-              <div className="col-xl-8 col-lg-7 d-lg-block d-none">
+              <div className="col-xl-6 col-lg-7 d-lg-block d-none">
                 <div className="main-menu_area position-relative">
                   <nav className="main-nav">
                     <ul>
@@ -255,16 +291,21 @@ const Header = () => {
                   </Link>
                 </div>
               </div>
-              <div className="col-xl-4 col-lg-5 col-sm-9">
+              <div className="col-xl-6 col-lg-5 col-sm-9">
                 <div className="header-right_area">
                   <ul>
-                    <li className="mobile-menu_wrap d-flex d-lg-none">
+                    {/* <li className="mobile-menu_wrap d-flex d-lg-none">
                       <a href="#mobileMenu" className="mobile-menu_btn toolbar-btn color--white">
                         <i className="ion-navicon"></i>
                       </a>
-                    </li>
-                    <li className="minicart-wrap">
+                    </li> */}
+                    <li  className="minicart-wrap">
                         <CartIcon onClick={() => dispatch(openCart())} />
+                    </li>
+                    <li className="contact-us_wrap">
+                      <Link style={{fontSize:15}} href="tel://+2342092920777">
+                        <i className="ion-android-call"></i>(+234) 209 292 0777
+                      </Link>
                     </li>
                     <li className="user-account_wrap">
                       {isAuthenticated ? (
@@ -279,11 +320,7 @@ const Header = () => {
                         </Link>
                       )}
                     </li>
-                    <li className="contact-us_wrap">
-                      <Link style={{fontSize:15}} href="tel://+2342092920777">
-                        <i className="ion-android-call"></i>(+234) 209 292 0777
-                      </Link>
-                    </li>
+                 
                   </ul>
                 </div>
               </div>
