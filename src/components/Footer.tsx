@@ -50,7 +50,7 @@ const Footer = () => {
               <div className="footer-widgets_info">
                 <div className="footer-widgets_logo">
                   <Link href={createLocaleUrl('/')}>
-                    <Image src="/assets/images/menu/logo/logo_skylubs.png" alt="Uren's Footer Logo" width={200} height={50} />
+                  <Image src="https://ik.imagekit.io/paysupport/Skyshoregroup/800_products/Untitled%20design%20(1)_4u0CemLCM.png?updatedAt=1758298202967" style={{position:'relative',bottom:1, marginBottom:3}}  width={200} height={50} alt="Skyshore Logo"  />
                   </Link>
                 </div>
                 <div className="widget-short_desc">
