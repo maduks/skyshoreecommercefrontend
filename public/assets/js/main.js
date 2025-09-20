@@ -16,15 +16,15 @@
     /*----------------------------------------*/
     /* Uren's Newsletter Popup
 /*----------------------------------------*/
-    setTimeout(function () {
-      $(".popup_wrapper").css({
-        opacity: "1",
-        visibility: "visible",
-      });
-      $(".popup_off").on("click", function () {
-        $(".popup_wrapper").fadeOut(500);
-      });
-    }, 5000);
+    // setTimeout(function () {
+    //   $(".popup_wrapper").css({
+    //     opacity: "1",
+    //     visibility: "visible",
+    //   });
+    //   $(".popup_off").on("click", function () {
+    //     $(".popup_wrapper").fadeOut(500);
+    //   });
+    // }, 5000);
 
     /*----------------------------------------*/
     /* Uren's Sticky Menu Activation
