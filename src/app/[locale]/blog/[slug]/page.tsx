@@ -6,6 +6,7 @@ import { useAppSelector, useAppDispatch } from '@/store/hooks';
 import { fetchBlogBySlug, fetchBlogs } from '@/store/slices/blogSlice';
 import { RootState } from '@/store/store';
 import { useScriptLoader } from '@/hooks/useScriptLoader';
+import { useCurrentLocale } from '@/hooks/useCurrentLocale';
 interface BlogDetailsPageProps {
   params: Promise<{ slug: string }>;
 }
@@ -22,6 +23,10 @@ const BlogDetailsPage = ({ params }: BlogDetailsPageProps) => {
       console.error('Error loading scripts:', error);
     }
   });
+  const currentLocale = useCurrentLocale();
+  const createLocaleUrl = (path: string) => {
+    return `/${currentLocale}${path}`;
+  };
 
   useEffect(() => {
     const loadBlog = async () => {
@@ -85,7 +90,7 @@ const BlogDetailsPage = ({ params }: BlogDetailsPageProps) => {
                   {recentPosts.map((post) => (
                     <div style={{marginBottom:10}} key={post._id} className="recent-post">
                       <div className="recent-post_thumb">
-                        <Link href={`/blog/${post.slug}`}>
+                        <Link href={createLocaleUrl(`/blog/${post.slug}`)}>
                           <Image 
                             className="img-full" 
                             src={post.featuredImage} 
@@ -98,7 +103,7 @@ const BlogDetailsPage = ({ params }: BlogDetailsPageProps) => {
                         </Link>
                       </div>
                       <div className="recent-post_desc">
-                        <span><Link href={`/blog/${post.slug}`}>{post.title}</Link> &nbsp; - &nbsp; </span>
+                        <span><Link href={createLocaleUrl(`/blog/${post.slug}`)}>{post.title}</Link> &nbsp; - &nbsp; </span>
                         <span className="post-date">{formatDate(post.publishedAt)}</span>
                       </div>
                     </div>
