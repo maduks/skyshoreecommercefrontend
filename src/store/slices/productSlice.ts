@@ -190,7 +190,8 @@ export const fetchProducts = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await retryWithBackoff(async () => {
-        const res = await axios.get(`${BASE_URL}/products`);
+        const res = await axios.get(`${BASE_URL}/products?limit=50`);
+        console.log('Products response:', res.data);
         if (res.status !== 200) {
           throw new Error('Failed to fetch products');
         }
