@@ -75,7 +75,7 @@ const ContactPage = () => {
                 </p>
                 <div className="single-contact-block">
                   <h4><i className="fa fa-fax"></i> Address</h4>
-                  <p>19A Cairo Crescent, Wuse II, Abuja, Nigeria</p>
+                  <p style={{color:'#fff'}}>19A Cairo Crescent, Wuse II, Abuja, Nigeria</p>
                 </div>
                 <div className="single-contact-block">
                   <h4><i className="fa fa-phone"></i> Phone</h4>

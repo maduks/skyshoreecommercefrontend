@@ -59,7 +59,7 @@ const Footer = () => {
                 </div>
                 <div className="widgets-essential_stuff">
                   <ul>
-                    <li className="uren-address"><span>{t('address')}:</span> 19A Cairo Crescent, Wuse II, Abuja, Nigeria</li>
+                    <li className="uren-address" style={{color:'#999999'}}><span>{t('address')}:</span> 19A Cairo Crescent, Wuse II, Abuja, Nigeria</li>
                     {/* <li className="uren-phone"><span>Call
                     Us:</span> <a href="tel://+123123321345">(+234) 209 292 0777</a>
                     </li> */}
