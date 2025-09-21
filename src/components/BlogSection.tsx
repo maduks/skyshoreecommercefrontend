@@ -8,6 +8,7 @@ import { useAppSelector, useAppDispatch } from '@/store/hooks';
 import { fetchBlogs } from '@/store/slices/blogSlice';
 import { RootState } from '@/store/store';
 import { useTranslations } from 'next-intl';
+import { useCurrentLocale } from '@/hooks/useCurrentLocale';
 
 // Declare jQuery types
 declare global {
@@ -23,6 +24,11 @@ const BlogSection = () => {
   const [sliderFailed, setSliderFailed] = React.useState(false);
   const dispatch = useAppDispatch();
   const { blogs, loading, error } = useAppSelector((state: RootState) => state.blog);
+
+  const currentLocale = useCurrentLocale();
+  const createLocaleUrl = (path: string) => {
+    return `/${currentLocale}${path}`;
+  };
 
   useEffect(() => {
     console.log('BlogSection: blogs.length =', blogs.length, 'loading =', loading, 'error =', error);
@@ -229,7 +235,7 @@ const BlogSection = () => {
                     <div key={post._id} className="slide-item">
                       <div className="inner-slide">
                         <div className="blog-img img-hover_effect">
-                          <Link href={`/blog/${post.slug}`}>
+                          <Link href={createLocaleUrl(`/blog/${post.slug}`)}>
                             <Image 
                               src={post.featuredImage} 
                               alt={post.title} 
@@ -242,7 +248,7 @@ const BlogSection = () => {
                           <span className="post-date">{formatDate(post.publishedAt)}</span>
                         </div>
                         <div className="blog-content">
-                          <h3><Link href={`/blog/${post.slug}`}>{post.title}</Link></h3>
+                          <h3><Link href={createLocaleUrl(`/blog/${post.slug}`)}>{post.title}</Link></h3>
                           <p>{post.excerpt}</p>
                         </div>
                       </div>
@@ -257,7 +263,7 @@ const BlogSection = () => {
                       <div key={post._id} className="col-lg-3 col-md-6 col-sm-6">
                         <div className="inner-slide">
                           <div className="blog-img img-hover_effect">
-                            <Link href={`/blog/${post.slug}`}>
+                            <Link href={createLocaleUrl(`/blog/${post.slug}`)}>
                               <Image 
                                 src={post.featuredImage} 
                                 alt={post.title} 
@@ -270,7 +276,7 @@ const BlogSection = () => {
                             <span className="post-date">{formatDate(post.publishedAt)}</span>
                           </div>
                           <div className="blog-content">
-                            <h3><Link href={`/blog/${post.slug}`}>{post.title}</Link></h3>
+                            <h3><Link href={createLocaleUrl(`/blog/${post.slug}`)}>{post.title}</Link></h3>
                             <p>{post.excerpt}</p>
                           </div>
                         </div>
