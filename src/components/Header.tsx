@@ -204,7 +204,7 @@ const Header = () => {
                     <ul>
                      <LanguageSwitcher />
                       <li>
-                        <Link style={{color:'#fff'}} href={createLocaleUrl('/my-account')}>{t('myAccount')}<i className="fa fa-chevron-down"></i></Link>
+                        <Link style={{color:'#fff'}} href={"#"}>{t('myAccount')}<i className="fa fa-chevron-down"></i></Link>
                         <ul className="ht-dropdown ht-my_account">
                           {isAuthenticated ? (
                             <>
