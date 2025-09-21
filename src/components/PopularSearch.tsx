@@ -19,10 +19,10 @@ const PopularSearch = () => {
           <div className="col-lg-12">
             <div className="popular-search">
               <label>Popular Search:</label>
-              <Link href={createLocaleUrl('/shop?search=brakes')}>Brakes & Rotors,</Link>
-              <Link href={createLocaleUrl('/shop?search=lighting')}>Lighting,</Link>
-              <Link href={createLocaleUrl('/shop?search=performance')}>Performance,</Link>
-              <Link href={createLocaleUrl('/shop?search=wheels')}>Wheels & Tires</Link>
+              <Link href={createLocaleUrl('/shop?search=engineoil')}>Engine Oil,</Link>
+              <Link href={createLocaleUrl('/shop?search=dieseloil')}>Diesel Oil,</Link>
+              <Link href={createLocaleUrl('/shop?search=motoroil')}>Motor Oil,</Link>
+              <Link href={createLocaleUrl('/shop?search=Heavyduty')}>Heavy Duty</Link>
             </div>
           </div>
         </div>

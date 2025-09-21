@@ -7,6 +7,7 @@ import ShippingInfo from '@/components/ShippingInfo';
 import BannerSection from '@/components/BannerSection';
 import NewArrivals from '@/components/NewArrivals';
 import DealOfTheDay from '@/components/DealOfTheDay';
+import DealOfTheDaySmall from '@/components/DealOfTheDaySmall';
 import PopularSearch from '@/components/PopularSearch';
 import BlogSection from '@/components/BlogSection';
 
@@ -20,6 +21,7 @@ export default function Home() {
       {/* <FeaturedCategories /> */}
       <BannerSection />
       <DealOfTheDay />
+      <DealOfTheDaySmall />
       <PopularSearch />
       <BlogSection />
       

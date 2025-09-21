@@ -205,7 +205,6 @@ const NewArrivals = () => {
             <div className="product-slider uren-slick-slider slider-navigation_style-1 img-hover-effect_area" 
                  data-slick-options='{"slidesToShow": 4, "spaceBetween": 30, "arrows" : true}' 
                  data-slick-responsive='[{"breakpoint":1599, "settings": {"slidesToShow": 3}}, {"breakpoint":1200, "settings": {"slidesToShow": 2}}, {"breakpoint":768, "settings": {"slidesToShow": 1}}]'>
-              
               {newArrivalProducts.map((product: Product) => {
                 const productId = typeof product._id === 'string' ? product._id : product._id.$oid;
                 return (
