@@ -64,6 +64,122 @@ const ProductDetailsPageClient = ({ id }: ProductDetailsPageClientProps) => {
     return productId === id;
   });
 
+  // Function to strip HTML tags from description
+  const stripHtmlTags = (html: string): string => {
+    return html.replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim();
+  };
+
+  // Update meta tags when product data is available
+  useEffect(() => {
+    if (product) {
+      // Update document title
+      const title = `${product.name} - ${product.brand} | Skyshore Lubricants`;
+      document.title = title;
+
+      // Update meta description
+      const cleanDescription = stripHtmlTags(product.description);
+      const shortDescription = cleanDescription.length > 160 
+        ? cleanDescription.substring(0, 157) + '...' 
+        : cleanDescription;
+
+      // Update or create meta description
+      let metaDescription = document.querySelector('meta[name="description"]');
+      if (!metaDescription) {
+        metaDescription = document.createElement('meta');
+        metaDescription.setAttribute('name', 'description');
+        document.head.appendChild(metaDescription);
+      }
+      metaDescription.setAttribute('content', shortDescription);
+
+      // Update keywords
+      const keywords = product.tags ? product.tags.join(', ') : '';
+      let metaKeywords = document.querySelector('meta[name="keywords"]');
+      if (!metaKeywords) {
+        metaKeywords = document.createElement('meta');
+        metaKeywords.setAttribute('name', 'keywords');
+        document.head.appendChild(metaKeywords);
+      }
+      metaKeywords.setAttribute('content', `${keywords}, ${product.brand}, engine oil, lubricants, automotive`);
+
+      // Update Open Graph tags
+      const updateOrCreateMeta = (property: string, content: string) => {
+        let meta = document.querySelector(`meta[property="${property}"]`);
+        if (!meta) {
+          meta = document.createElement('meta');
+          meta.setAttribute('property', property);
+          document.head.appendChild(meta);
+        }
+        meta.setAttribute('content', content);
+      };
+
+      // Open Graph tags
+      updateOrCreateMeta('og:type', 'product');
+      updateOrCreateMeta('og:title', title);
+      updateOrCreateMeta('og:description', shortDescription);
+      updateOrCreateMeta('og:url', `${window.location.origin}/product/${id}`);
+      updateOrCreateMeta('og:site_name', 'Skyshore Lubricants');
+      updateOrCreateMeta('og:locale', 'en_US');
+
+      // Open Graph image
+      if (product.images && product.images[0]) {
+        updateOrCreateMeta('og:image', product.images[0]);
+        updateOrCreateMeta('og:image:width', '800');
+        updateOrCreateMeta('og:image:height', '600');
+        updateOrCreateMeta('og:image:alt', product.name);
+      }
+
+      // Twitter Card tags
+      const updateOrCreateTwitterMeta = (name: string, content: string) => {
+        let meta = document.querySelector(`meta[name="twitter:${name}"]`);
+        if (!meta) {
+          meta = document.createElement('meta');
+          meta.setAttribute('name', `twitter:${name}`);
+          document.head.appendChild(meta);
+        }
+        meta.setAttribute('content', content);
+      };
+
+      updateOrCreateTwitterMeta('card', 'summary_large_image');
+      updateOrCreateTwitterMeta('title', title);
+      updateOrCreateTwitterMeta('description', shortDescription);
+      updateOrCreateTwitterMeta('creator', '@skyshorelubs');
+      updateOrCreateTwitterMeta('site', '@skyshorelubs');
+
+      if (product.images && product.images[0]) {
+        updateOrCreateTwitterMeta('image', product.images[0]);
+      }
+
+      // Product-specific meta tags
+      const currentPrice = product.salePrice ? product.salePrice.$numberDouble : product.price.$numberDouble;
+      
+      const updateOrCreateProductMeta = (name: string, content: string) => {
+        let meta = document.querySelector(`meta[name="product:${name}"]`);
+        if (!meta) {
+          meta = document.createElement('meta');
+          meta.setAttribute('name', `product:${name}`);
+          document.head.appendChild(meta);
+        }
+        meta.setAttribute('content', content);
+      };
+
+      updateOrCreateProductMeta('price:amount', currentPrice);
+      updateOrCreateProductMeta('price:currency', 'NGN');
+      updateOrCreateProductMeta('availability', product.stock.$numberInt > 0 ? 'in stock' : 'out of stock');
+      updateOrCreateProductMeta('condition', 'new');
+      updateOrCreateProductMeta('brand', product.brand);
+      updateOrCreateProductMeta('category', 'Automotive Lubricants');
+
+      // Canonical URL
+      let canonicalLink = document.querySelector('link[rel="canonical"]');
+      if (!canonicalLink) {
+        canonicalLink = document.createElement('link');
+        canonicalLink.setAttribute('rel', 'canonical');
+        document.head.appendChild(canonicalLink);
+      }
+      canonicalLink.setAttribute('href', `${window.location.origin}/product/${id}`);
+    }
+  }, [product, id]);
+
   const formatPrice = (price: number | { $numberDouble: string }) => {
     let numericPrice: number;
     if (typeof price === 'number') {

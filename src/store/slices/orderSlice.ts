@@ -62,7 +62,7 @@ const initialState: OrderState = {
   success: false,
 };
 
-const BASE_URL = "https://skyshorecommerce.vercel.app/api";
+const BASE_URL = "https://api.skyshorelubs.com/api";
 
 // Async thunk for creating an order
 export const createOrder = createAsyncThunk(

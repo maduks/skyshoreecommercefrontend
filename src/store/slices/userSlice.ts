@@ -51,7 +51,7 @@ const initialState: UserState = {
   isAuthenticated: false,
 };
 
-const BASE_URL = "https://skyshorecommerce.vercel.app/api";
+const BASE_URL = "https://api.skyshorelubs.com/api";
 // Async thunk for user login
 export const loginUser = createAsyncThunk(
   'user/login',

@@ -124,7 +124,7 @@ const fallbackCategories = [
   }
 ];
 
-const BASE_URL = "https://skyshorecommerce.vercel.app/api";
+const BASE_URL = "https://api.skyshorelubs.com/api";
 
 // Helper function for retrying API calls with exponential backoff
 const retryWithBackoff = async (apiCall: () => Promise<unknown>, maxRetries = 3) => {
