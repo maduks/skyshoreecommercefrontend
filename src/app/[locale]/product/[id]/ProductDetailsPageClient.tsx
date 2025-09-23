@@ -150,7 +150,7 @@ const ProductDetailsPageClient = ({ id }: ProductDetailsPageClientProps) => {
       }
 
       // Product-specific meta tags
-      const currentPrice = product.salePrice ? product.salePrice.$numberDouble : product.price.$numberDouble;
+      const currentPrice = product.salePrice ? getNumericValue(product.salePrice) : getNumericValue(product.price);
       
       const updateOrCreateProductMeta = (name: string, content: string) => {
         let meta = document.querySelector(`meta[name="product:${name}"]`);
@@ -162,9 +162,9 @@ const ProductDetailsPageClient = ({ id }: ProductDetailsPageClientProps) => {
         meta.setAttribute('content', content);
       };
 
-      updateOrCreateProductMeta('price:amount', currentPrice);
+      updateOrCreateProductMeta('price:amount', currentPrice.toString());
       updateOrCreateProductMeta('price:currency', 'NGN');
-      updateOrCreateProductMeta('availability', product.stock.$numberInt > 0 ? 'in stock' : 'out of stock');
+      updateOrCreateProductMeta('availability', getNumericValue(product.stock) > 0 ? 'in stock' : 'out of stock');
       updateOrCreateProductMeta('condition', 'new');
       updateOrCreateProductMeta('brand', product.brand);
       updateOrCreateProductMeta('category', 'Automotive Lubricants');
