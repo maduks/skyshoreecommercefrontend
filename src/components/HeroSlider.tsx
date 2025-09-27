@@ -109,7 +109,7 @@ const HeroSlider = () => {
                 <div className="slider-content">
                   <span>New thinking new possibilities</span>
                   <h3>Car engine <br/>oil</h3>
-                  <h4>Starting at <span>₦69,900.00</span></h4>
+                  <h4>Starting at <span>₦12,900.00</span></h4>
                   <div className="uren-btn-ps_left slide-btn">
                     <Link className="uren-btn" href={createLocaleUrl('/shop')}>Shop Now</Link>
                   </div>
