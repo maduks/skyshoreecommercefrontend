@@ -1568,7 +1568,7 @@ body {
 .uren-deal-of-the-day_area,
 .uren-popular-search_area,
 .uren-blog_area {
-  padding: 60px 0 !important;
+  padding: 20px 0 20px 0 !important;
 }
 
 /* Hero slider should not have extra padding - let it use its natural spacing */

@@ -2183,7 +2183,9 @@ button, .global-overlay, .quantity .cart-plus-minus > .qtybutton, .price-filter 
 .offcanvas-menu_wrapper .short-desc > p {
   margin-bottom: 0;
 }
-
+.section-space, .section-space-y-axis-100, .uren-new-arrivals_area, .uren-shipping_area, .uren-banner_area, .uren-deal-of-the-day_area, .uren-popular-search_area, .uren-blog_area {
+  padding: 10px 0px !important;
+}
 /* ---Offcanvas Minicart Area--- */
 .offcanvas-minicart_wrapper .offcanvas-menu-inner {
   padding: 60px !important;
@@ -3501,7 +3503,7 @@ button, .global-overlay, .quantity .cart-plus-minus > .qtybutton, .price-filter 
 
 /* ---Uren's Special Product--- */
 .special-product_area {
-  padding: 75px 0 0;
+  padding: 35px 0 0;
 }
 
 .special-product_slider,
