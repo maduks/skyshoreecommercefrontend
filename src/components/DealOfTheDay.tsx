@@ -289,7 +289,7 @@ const DealOfTheDay = () => {
 
   return (
     <>
-      <div className="special-product_area">
+      <div style={{position: 'relative', bottom: '60px'}} className="special-product_area">
         <div className="container-fluid">
           <div className="row">
             <div className="col-lg-12">

@@ -1597,6 +1597,8 @@ button, .global-overlay, .quantity .cart-plus-minus > .qtybutton, .price-filter 
   background-position: center center;
   background-size: contain;
   min-height: 600px;
+  position: relative;
+  bottom: 30px;
 }
 
 @media (max-width: 767px) {
@@ -1657,6 +1659,8 @@ button, .global-overlay, .quantity .cart-plus-minus > .qtybutton, .price-filter 
   background-repeat: no-repeat;
   background-position:center center;
   background-size: contain;
+  position: relative;
+  bottom: 30px;
   min-height: 600px;
 }
 

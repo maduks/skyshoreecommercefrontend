@@ -194,7 +194,7 @@ const NewArrivals = () => {
   }
 
   return (
-    <div className="uren-product_area">
+    <div style={{position: 'relative', bottom: '80px'}} className="uren-product_area">
       <div className="container-fluid">
         <div className="row">
           <div className="col-lg-12">

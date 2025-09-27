@@ -13,7 +13,7 @@ const PopularSearch = () => {
   };
 
   return (
-    <div className="popular-search_area">
+    <div style={{position: 'relative', bottom: '20px'}} className="popular-search_area">
       <div className="container-fluid">
         <div className="row">
           <div className="col-lg-12">

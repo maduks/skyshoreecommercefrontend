@@ -13,7 +13,7 @@ const BannerSection = () => {
   };
 
   return (
-    <div className="uren-banner_area">
+    <div style={{position: 'relative', bottom: '40px'}} className="uren-banner_area">
       <div className="container-fluid">
         <div className="row">
           <div className="col-lg-6 col-md-6 col-sm-12">
