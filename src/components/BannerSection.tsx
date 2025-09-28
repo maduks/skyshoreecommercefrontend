@@ -3,6 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { useLocale } from 'next-intl';
+import ImageLoader from './ImageLoader';
 
 const BannerSection = () => {
   const locale = useLocale();
@@ -18,7 +19,10 @@ const BannerSection = () => {
         <div className="row">
           <div className="col-lg-6 col-md-6 col-sm-12">
             <div className="banner-item img-hover_effect">
-              <div className="banner-img-1"></div>
+              <ImageLoader 
+                src="/assets/images/banner/1-1.png"
+                className="banner-img-1"
+              />
               <div className="banner-content">
                 <span className="offer">Protect Your Investment</span>
                 <h4>Luxury Car Engine Oil</h4>
@@ -32,7 +36,10 @@ const BannerSection = () => {
           </div>
           <div className="col-lg-6 col-md-6 col-sm-12">
             <div className="banner-item img-hover_effect">
-              <div className="banner-img-1 banner-img-2"></div>
+              <ImageLoader 
+                src="/assets/images/banner/1-2.png"
+                className="banner-img-1 banner-img-2"
+              />
               <div className="banner-content">
                 <span className="offer">Enhance Your Fleet&apos;s Performance</span>
                 <h4>Premium Diesel Engine Oil</h4>

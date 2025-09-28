@@ -4,6 +4,7 @@
 import React, { useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { useLocale } from 'next-intl';
+import SliderImageLoader from './SliderImageLoader';
 
 
 // Declare jQuery types
@@ -105,7 +106,10 @@ const HeroSlider = () => {
           <div className="col-lg-12">
             <div ref={sliderRef} className="main-slider slider-navigation_style-2">
               {/* First Slide */}
-              <div className="single-slide animation-style-01 bg-1">
+              <SliderImageLoader 
+                imageUrl="https://ik.imagekit.io/paysupport/Skyshoregroup/800_products/Untitled%20design%20(4)_hqAIrPKWD.png?updatedAt=1759004746697"
+                className="single-slide animation-style-01 bg-1"
+              >
                 <div className="slider-content">
                   <span>New thinking new possibilities</span>
                   <h3>Car engine <br/>oil</h3>
@@ -114,10 +118,13 @@ const HeroSlider = () => {
                     <Link className="uren-btn" href={createLocaleUrl('/shop')}>Shop Now</Link>
                   </div>
                 </div>
-              </div>
+              </SliderImageLoader>
               
               {/* Second Slide */}
-              <div className="single-slide animation-style-02 bg-2">
+              <SliderImageLoader 
+                imageUrl="https://ik.imagekit.io/paysupport/Skyshoregroup/800_products/Untitled%20design%20(5)_zR3AXFxTK.png?updatedAt=1759005134180"
+                className="single-slide animation-style-02 bg-2"
+              >
                 <div className="slider-content slider-content-2">
                   <span className="primary-text_color">Premium Protection, Peak Performance</span>
                   <h3>Engine <br/>Essentials</h3>
@@ -126,10 +133,13 @@ const HeroSlider = () => {
                     <Link className="uren-btn" href={createLocaleUrl('/shop')}>Read More</Link>
                   </div>
                 </div>
-              </div>
+              </SliderImageLoader>
 
                {/* Third Slide */}
-               <div className="single-slide animation-style-02 bg-3">
+               <SliderImageLoader 
+                 imageUrl="https://ik.imagekit.io/paysupport/Skyshoregroup/800_products/Untitled%20design%20(6)_7IpmCGqd0.png?updatedAt=1759005337193"
+                 className="single-slide animation-style-02 bg-3"
+               >
                 <div className="slider-content slider-content-2">
                   <span className="primary-text_color">Trusted Quality, Proven Results</span>
                   <h3>Performance <br/>Oils</h3>
@@ -138,7 +148,7 @@ const HeroSlider = () => {
                     <Link className="uren-btn" href={createLocaleUrl('/shop')}>Read More</Link>
                   </div>
                 </div>
-              </div>
+              </SliderImageLoader>
             </div>
           </div>
         </div>

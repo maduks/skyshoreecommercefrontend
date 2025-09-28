@@ -1600,13 +1600,13 @@ button, .global-overlay, .quantity .cart-plus-minus > .qtybutton, .price-filter 
   position: relative;
   bottom: 30px;
 }
-
+/* small screen mobile banner */
 @media (max-width: 767px) {
   
   .bg-2 {
     min-height: 380px;
     background-size: cover !important;
-    background-image: url("../images/slider/small_two.png") !important;
+    background-image: url("https://ik.imagekit.io/paysupport/3_Kkr1RWI9gN.jpg?updatedAt=1759098185266") !important;
     &:before {
       content: '';
     position: absolute;
@@ -1615,13 +1615,13 @@ button, .global-overlay, .quantity .cart-plus-minus > .qtybutton, .price-filter 
     bottom: 0;
     left: 0;
     background-image: linear-gradient(to bottom right,#000,#000);
-    opacity: .6; 
+    opacity: .5; 
     }
   }
   .bg-1{
     min-height: 380px;
     background-size: cover !important;
-    background-image: url("../images/slider/small_one_.png") !important;
+    background-image: url("https://ik.imagekit.io/paysupport/2_2JNVn4xZM.jpg?updatedAt=1759098184765") !important;
     &:before {
       content: '';
     position: absolute;
@@ -1630,13 +1630,13 @@ button, .global-overlay, .quantity .cart-plus-minus > .qtybutton, .price-filter 
     bottom: 0;
     left: 0;
     background-image: linear-gradient(to bottom right,#000,#000);
-    opacity: .6; 
+    opacity: .5; 
     }
   }
   .bg-3{
     min-height: 380px;
     background-size: cover !important;
-    background-image: url("../images/slider/small_three.png") !important;
+    background-image: url("https://ik.imagekit.io/paysupport/1_2N_CvhcMhO.jpg?updatedAt=1759098184498") !important;
     &:before {
       content: '';
     position: absolute;
@@ -1645,7 +1645,7 @@ button, .global-overlay, .quantity .cart-plus-minus > .qtybutton, .price-filter 
     bottom: 0;
     left: 0;
     background-image: linear-gradient(to bottom right,#000,#000);
-    opacity: .6; 
+    opacity: .5; 
     }
   }
 }
