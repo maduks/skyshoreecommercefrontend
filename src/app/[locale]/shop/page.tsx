@@ -15,6 +15,8 @@ import ApiStatusIndicator from '@/components/ApiStatusIndicator';
 import { useQuickView } from '@/components/QuickViewProvider';
 import Notification from '@/components/Notification';
 import ProductShimmer from '@/components/ProductShimmer';
+import TransitionLink from '@/components/TransitionLink';
+import { useNavigationTransition } from '@/hooks/useNavigationTransition';
 
 const ShopPage = () => {
   const dispatch = useAppDispatch();
@@ -27,6 +29,7 @@ const ShopPage = () => {
   const { items: wishlistItems } = useAppSelector((state: any) => state.wishlist);
   const { items: compareItems } = useAppSelector((state: any) => state.compare);
   const { openQuickView } = useQuickView();
+  const { isPending } = useNavigationTransition();
   
   // Helper function to create locale-aware URLs
   const createLocaleUrl = (path: string) => {
@@ -238,7 +241,7 @@ const ShopPage = () => {
             <div className="breadcrumb-content">
               <h2>{t('title')}</h2>
               <ul>
-                <li><Link href={createLocaleUrl('/')}>{tNav('home')}</Link></li>
+                <li><TransitionLink href={createLocaleUrl('/')}>{tNav('home')}</TransitionLink></li>
                 <li className="active">{t('breadcrumb')}</li>
               </ul>
             </div>
@@ -375,6 +378,18 @@ const ShopPage = () => {
 
   return (
     <>
+      {/* Navigation Loading Overlay */}
+      {isPending && (
+        <div className="navigation-loading-overlay">
+          <div className="navigation-spinner">
+            <div className="spinner-ring"></div>
+            <div className="spinner-ring"></div>
+            <div className="spinner-ring"></div>
+            <div className="spinner-ring"></div>
+          </div>
+        </div>
+      )}
+      
       <ApiStatusIndicator />
       {/* Begin Uren's Breadcrumb Area */}
       <div className="breadcrumb-area">
@@ -382,7 +397,7 @@ const ShopPage = () => {
           <div className="breadcrumb-content">
             <h2>{t('title')}</h2>
             <ul>
-              <li><Link href={createLocaleUrl('/')}>{tNav('home')}</Link></li>
+              <li><TransitionLink href={createLocaleUrl('/')}>{tNav('home')}</TransitionLink></li>
               <li className="active">{t('breadcrumb')}</li>
             </ul>
           </div>
@@ -528,7 +543,7 @@ const ShopPage = () => {
                       <div className="inner-slide">
                         <div className="single-product">
                           <div className="product-img">
-                            <Link href={createLocaleUrl(`/product/${product._id}`)}>
+                            <TransitionLink href={createLocaleUrl(`/product/${product._id}`)}>
                               <Image 
                                 className="primary-img" 
                                 src={product.images[0] || "/assets/images/product/large-size/1.jpg"} 
@@ -547,7 +562,7 @@ const ShopPage = () => {
                                 quality={95}
                                 style={{ objectFit: 'contain' }}
                               />
-                            </Link>
+                            </TransitionLink>
                             {product.newArrival && (
                               <div className="sticker">
                                 <span className="sticker">New</span>
@@ -603,9 +618,9 @@ const ShopPage = () => {
                                 </ul>
                               </div>
                               <h6>
-                                <Link className="product-name" href={createLocaleUrl(`/product/${product._id}`)}>
+                                <TransitionLink className="product-name" href={createLocaleUrl(`/product/${product._id}`)}>
                                   {product.name}
-                                </Link>
+                                </TransitionLink>
                               </h6>
                               <div className="price-box">
                                 {product.salePrice && product.salePrice < product.price ? (
@@ -625,7 +640,7 @@ const ShopPage = () => {
                     <div className="list-slide_item">
                       <div className="single-product">
                         <div className="product-img">
-                          <Link href={createLocaleUrl(`/product/${product._id}`)}>
+                          <TransitionLink href={createLocaleUrl(`/product/${product._id}`)}>
                             <Image 
                               className="primary-img" 
                               src={product.images[0] || "/assets/images/product/large-size/1.jpg"} 
@@ -644,7 +659,7 @@ const ShopPage = () => {
                               quality={95}
                               style={{ objectFit: 'cover' }}
                             />
-                          </Link>
+                          </TransitionLink>
                           {product.salePrice && product.salePrice < product.price && (
                             <div className="sticker-area-2">
                               <span className="sticker-2">-{Math.round(((product.price - product.salePrice) / product.price) * 100)}%</span>
@@ -660,9 +675,9 @@ const ShopPage = () => {
                               </ul>
                             </div>
                             <h6>
-                              <Link className="product-name" href={createLocaleUrl(`/product/${product._id}`)}>
+                              <TransitionLink className="product-name" href={createLocaleUrl(`/product/${product._id}`)}>
                                 {product.name}
-                              </Link>
+                              </TransitionLink>
                             </h6>
                             <div className="price-box">
                               {product.salePrice && product.salePrice < product.price ? (

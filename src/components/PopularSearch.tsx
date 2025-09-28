@@ -1,8 +1,8 @@
 'use client';
 
 import React from 'react';
-import Link from 'next/link';
 import { useLocale } from 'next-intl';
+import TransitionLink from './TransitionLink';
 
 const PopularSearch = () => {
   const locale = useLocale();
@@ -19,10 +19,10 @@ const PopularSearch = () => {
           <div className="col-lg-12">
             <div className="popular-search">
               <label>Popular Search:</label>
-              <Link href={createLocaleUrl('/shop?search=engineoil')}>Engine Oil,</Link>
-              <Link href={createLocaleUrl('/shop?search=dieseloil')}>Diesel Oil,</Link>
-              <Link href={createLocaleUrl('/shop?search=motoroil')}>Motor Oil,</Link>
-              <Link href={createLocaleUrl('/shop?search=Heavyduty')}>Heavy Duty</Link>
+              <TransitionLink href={createLocaleUrl('/shop?search=engineoil')}>Engine Oil,</TransitionLink>
+              <TransitionLink href={createLocaleUrl('/shop?search=dieseloil')}>Diesel Oil,</TransitionLink>
+              <TransitionLink href={createLocaleUrl('/shop?search=motoroil')}>Motor Oil,</TransitionLink>
+              <TransitionLink href={createLocaleUrl('/shop?search=Heavyduty')}>Heavy Duty</TransitionLink>
             </div>
           </div>
         </div>

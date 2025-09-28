@@ -1,7 +1,6 @@
 'use client';
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useState } from 'react';
-import Link from 'next/link';
 import Image from 'next/image';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { fetchProducts, Product } from '@/store/slices/productSlice';
@@ -12,6 +11,7 @@ import { useScriptLoader } from '@/hooks/useScriptLoader';
 import ProductShimmer from './ProductShimmer';
 import { useTranslations } from 'next-intl';
 import { useCurrentLocale } from '@/hooks/useCurrentLocale';
+import TransitionLink from './TransitionLink';
 
 
 const NewArrivals = () => {
@@ -212,7 +212,7 @@ const NewArrivals = () => {
                     <div className="inner-slide">
                       <div className="single-product">
                         <div className="product-img">
-                          <Link href={createLocaleUrl(`/product/${productId}`)}>
+                          <TransitionLink href={createLocaleUrl(`/product/${productId}`)}>
                             <Image 
                               className="primary-img" 
                               src={product.images[0] || "/assets/images/product/medium-size/1-1.jpg"} 
@@ -231,7 +231,7 @@ const NewArrivals = () => {
                               quality={95}
                               style={{ objectFit: 'contain' }}
                             />
-                          </Link>
+                          </TransitionLink>
                           {product.newArrival && <span className="sticker">New</span>}
                           {product.salePrice && getNumericValue(product.salePrice) < getNumericValue(product.price) && (
                             <div className="sticker-area-2">
@@ -280,7 +280,7 @@ const NewArrivals = () => {
                               </ul>
                             </div>
                             <h6>
-                              <Link className="product-name" href={createLocaleUrl(`/product/${productId}`)}>{product.name}</Link>
+                              <TransitionLink className="product-name" href={createLocaleUrl(`/product/${productId}`)}>{product.name}</TransitionLink>
                             </h6>
                             <div className="price-box">
                               {product.salePrice && getNumericValue(product.salePrice) < getNumericValue(product.price) ? (

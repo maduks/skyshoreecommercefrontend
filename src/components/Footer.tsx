@@ -5,6 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useTranslations, useLocale } from 'next-intl';
 import { useParams } from 'next/navigation';
+import TransitionLink from './TransitionLink';
 
 
 const Footer = () => {
@@ -137,9 +138,9 @@ const Footer = () => {
                     </div>
                     <div className="footer-widgets">
                       <ul>
-                        <li><Link href={createLocaleUrl('/my-account')}>{t('more.myAccount')}</Link></li>
-                        <li><Link href={createLocaleUrl('/order-history')}>{t('more.orderHistory')}</Link></li>
-                        <li><Link href={createLocaleUrl('/wishlist')}>{t('more.wishlist')}</Link></li>
+                        <li><TransitionLink href={createLocaleUrl('/my-account')}>{t('more.myAccount')}</TransitionLink></li>
+                        <li><TransitionLink href={createLocaleUrl('/order-history')}>{t('more.orderHistory')}</TransitionLink></li>
+                        <li><TransitionLink href={createLocaleUrl('/wishlist')}>{t('more.wishlist')}</TransitionLink></li>
                       </ul>
                     </div>
                   </div>

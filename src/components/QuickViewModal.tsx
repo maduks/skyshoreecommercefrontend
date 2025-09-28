@@ -4,11 +4,14 @@
 import React, { useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useTranslations } from 'next-intl';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { addToCart } from '@/store/slices/cartSlice';
 import { addToWishlist } from '@/store/slices/wishlistSlice';
 import { addToCompare } from '@/store/slices/compareSlice';
-
+import { useCurrentLocale } from '@/hooks/useCurrentLocale';
+import { useRouter } from 'next/navigation';
+import { useTransition } from 'react';
 
 interface QuickViewModalProps {
   isOpen: boolean;
@@ -21,7 +24,16 @@ const QuickViewModal: React.FC<QuickViewModalProps> = ({ isOpen, onClose, produc
   const { items: cartItems } = useAppSelector((state) => state.cart);
   const { items: wishlistItems } = useAppSelector((state) => state.wishlist);
   const { items: compareItems } = useAppSelector((state) => state.compare);
+  const router = useRouter();
 
+  const [isPending, startTransition] = useTransition();
+
+
+  const t = useTranslations('pages.home');
+  const currentLocale = useCurrentLocale();
+  const createLocaleUrl = (path: string) => {
+    return `/${currentLocale}${path}`;
+  };
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat('en-NG', {
       style: 'currency',
@@ -29,6 +41,13 @@ const QuickViewModal: React.FC<QuickViewModalProps> = ({ isOpen, onClose, produc
       minimumFractionDigits: 0,
       maximumFractionDigits: 0,
     }).format(price);
+  };
+
+  const handleClick = () => {
+    startTransition(() => {
+      router.push(createLocaleUrl(`/product/${product._id}`));
+      onClose();
+    });
   };
 
   const isInCart = (productId: string) => {
@@ -206,9 +225,11 @@ const QuickViewModal: React.FC<QuickViewModalProps> = ({ isOpen, onClose, produc
                 <div className="sp-content">
                   <div className="sp-heading">
                     <h5>
-                      <Link href={`/product/${product._id}`}>
+                      <b style={{cursor:"pointer"}} onClick={handleClick}>
+
+                      {/* {isPending ? 'Loading...' : product.name} */}
                         {product.name}
-                      </Link>
+                      </b>
                     </h5>
                   </div>
                   <div className="rating-box">
@@ -261,7 +282,7 @@ const QuickViewModal: React.FC<QuickViewModalProps> = ({ isOpen, onClose, produc
                           {isInCart(product._id) ? 'Added to Cart' : 'Add To Cart'}
                         </a>
                       </li>
-                      <li>
+                      {/* <li>
                         <a 
                           href="javascript:void(0)"
                           className={isInWishlist(product._id) ? 'added' : ''}
@@ -272,8 +293,8 @@ const QuickViewModal: React.FC<QuickViewModalProps> = ({ isOpen, onClose, produc
                         >
                           <i className="ion-android-favorite-outline"></i>
                         </a>
-                      </li>
-                      <li>
+                      </li> */}
+                      {/* <li>
                         <a 
                           href="javascript:void(0)"
                           className={isInCompare(product._id) ? 'added' : ''}
@@ -284,7 +305,7 @@ const QuickViewModal: React.FC<QuickViewModalProps> = ({ isOpen, onClose, produc
                         >
                           <i className="ion-ios-shuffle-strong"></i>
                         </a>
-                      </li>
+                      </li> */}
                     </ul>
                   </div>
                   <div className="uren-tag-line">

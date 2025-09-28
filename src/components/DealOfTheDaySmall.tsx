@@ -13,6 +13,7 @@ import ProductShimmer from './ProductShimmer';
 import { useScriptLoader } from '@/hooks/useScriptLoader';
 import { useTranslations } from 'next-intl';
 import { useCurrentLocale } from '@/hooks/useCurrentLocale';
+import TransitionLink from './TransitionLink';
 interface VariationOption {
   value: string;
   price: number;
@@ -310,7 +311,7 @@ const DealOfTheDay = () => {
                       <div className="inner-slide">
                         <div className="single-product">
                           <div className="product-img">
-                            <Link href={createLocaleUrl(`/product/${productId}`)}>
+                            <TransitionLink href={createLocaleUrl(`/product/${productId}`)}>
                               <Image 
                                 className="primary-img" 
                                 src={product.images[0] || "/assets/images/product/medium-size/1-1.jpg"} 
@@ -329,7 +330,7 @@ const DealOfTheDay = () => {
                                 quality={95}
                                 style={{ objectFit: 'contain' }} 
                               />
-                            </Link>
+                            </TransitionLink>
                             {product.salePrice && getNumericValue(product.salePrice) < getNumericValue(product.price) && (
                               <div className="sticker-area-2">
                                 <span className="sticker-2">-{calculateDiscount(product.price, product.salePrice)}%</span>

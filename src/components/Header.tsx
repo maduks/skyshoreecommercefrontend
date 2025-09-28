@@ -12,9 +12,10 @@ import { closeCart, openCart } from '@/store/slices/cartSlice';
 import CartIcon from './CartIcon';
 import SideCart from './SideCart';
 import LanguageSwitcher from './LanguageSwitcher';
+import TransitionLink from './TransitionLink';
+import { useNavigationTransition } from '@/hooks/useNavigationTransition';
 
 const Header = () => {
-  const router = useRouter();
   const pathname = usePathname();
   // const params = useParams();
   // const locale = useLocale();
@@ -26,6 +27,7 @@ const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const t = useTranslations('navigation');
   const tHeader = useTranslations('header');
+  const { isPending, navigateWithTransition } = useNavigationTransition();
 
   // Helper function to create locale-aware URLs
   const createLocaleUrl = (path: string) => {
@@ -92,7 +94,7 @@ const Header = () => {
   // Handle suggestion click
   const handleSuggestionClick = (product: Product) => {
     const productId = typeof product._id === 'string' ? product._id : product._id.$oid;
-    router.push(createLocaleUrl(`/product/${productId}`));
+    navigateWithTransition(createLocaleUrl(`/product/${productId}`));
     setSearchQuery('');
     setSearchSuggestions([]);
     setShowSuggestions(false);
@@ -102,7 +104,7 @@ const Header = () => {
   // Handle mobile suggestion click
   const handleMobileSuggestionClick = (product: Product) => {
     const productId = typeof product._id === 'string' ? product._id : product._id.$oid;
-    router.push(createLocaleUrl(`/product/${productId}`));
+    navigateWithTransition(createLocaleUrl(`/product/${productId}`));
     setMobileSearchQuery('');
     setMobileSearchSuggestions([]);
     setShowMobileSuggestions(false);
@@ -113,7 +115,7 @@ const Header = () => {
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchQuery.trim()) {
-      router.push(createLocaleUrl(`/shop?search=${encodeURIComponent(searchQuery.trim())}`));
+      navigateWithTransition(createLocaleUrl(`/shop?search=${encodeURIComponent(searchQuery.trim())}`));
       setSearchQuery('');
       setSearchSuggestions([]);
       setShowSuggestions(false);
@@ -124,7 +126,7 @@ const Header = () => {
   const handleMobileSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (mobileSearchQuery.trim()) {
-      router.push(createLocaleUrl(`/shop?search=${encodeURIComponent(mobileSearchQuery.trim())}`));
+      navigateWithTransition(createLocaleUrl(`/shop?search=${encodeURIComponent(mobileSearchQuery.trim())}`));
       setMobileSearchQuery('');
       setMobileSearchSuggestions([]);
       setShowMobileSuggestions(false);
@@ -170,6 +172,18 @@ const Header = () => {
 
   return (
     <>
+      {/* Navigation Loading Overlay */}
+      {isPending && (
+        <div className="navigation-loading-overlay">
+          <div className="navigation-spinner">
+            <div className="spinner-ring"></div>
+            <div className="spinner-ring"></div>
+            <div className="spinner-ring"></div>
+            <div className="spinner-ring"></div>
+          </div>
+        </div>
+      )}
+      
       {/* Header Main Area */}
       <header className="header-main_area bg--sapphire">
         {/* Top Header */}
@@ -181,17 +195,17 @@ const Header = () => {
                   <nav className="main-nav">
                     <ul>
                       <li className={`dropdown-holder ${getActiveClass('/')}`}>
-                        <Link href={createLocaleUrl('/')}>{t('home')}</Link>
+                        <TransitionLink href={createLocaleUrl('/')}>{t('home')}</TransitionLink>
                       
                       </li>
                       <li className={`megamenu-holder ${getActiveClass('/shop')}`}>
-                        <Link href={createLocaleUrl('/shop')}>{t('shop')} </Link>
+                        <TransitionLink href={createLocaleUrl('/shop')}>{t('shop')} </TransitionLink>
                      
                       </li>
                     
-                      <li className={getActiveClass('/about')}><Link href={createLocaleUrl('/about')}>{t('about')}</Link></li>
-                      <li className={getActiveClass('/contact')}><Link href={createLocaleUrl('/contact')}>{t('contact')}</Link></li>
-                      <li className={getActiveClass('/blog')}><Link href={createLocaleUrl('/blog')}>{t('blog')} </Link>
+                      <li className={getActiveClass('/about')}><TransitionLink href={createLocaleUrl('/about')}>{t('about')}</TransitionLink></li>
+                      <li className={getActiveClass('/contact')}><TransitionLink href={createLocaleUrl('/contact')}>{t('contact')}</TransitionLink></li>
+                      <li className={getActiveClass('/blog')}><TransitionLink href={createLocaleUrl('/blog')}>{t('blog')} </TransitionLink>
                     
                       </li>
                     </ul>
@@ -208,13 +222,13 @@ const Header = () => {
                         <ul className="ht-dropdown ht-my_account">
                           {isAuthenticated ? (
                             <>
-                              <li><Link href={createLocaleUrl('/my-account')}>Dashboard</Link></li>
-                              <li><Link href={createLocaleUrl('/order-history')}>Order History</Link></li>
+                              <li><TransitionLink href={createLocaleUrl('/my-account')}>Dashboard</TransitionLink></li>
+                              <li><TransitionLink href={createLocaleUrl('/order-history')}>Order History</TransitionLink></li>
                             </>
                           ) : (
                             <>
-                              <li><Link href={createLocaleUrl('/register')}>{t('register')}</Link></li>
-                              <li className="active"><Link href={createLocaleUrl('/login')}>{t('login')}</Link></li>
+                              <li><TransitionLink href={createLocaleUrl('/register')}>{t('register')}</TransitionLink></li>
+                              <li className="active"><TransitionLink href={createLocaleUrl('/login')}>{t('login')}</TransitionLink></li>
                             </>
                           )}
                         </ul>
@@ -243,13 +257,13 @@ const Header = () => {
                         <ul className="ht-dropdown ht-my_account">
                           {isAuthenticated ? (
                             <>
-                              <li><Link href={createLocaleUrl('/my-account')}>Dashboard</Link></li>
-                              <li><Link href={createLocaleUrl('/order-history')}>Order History</Link></li>
+                              <li><TransitionLink href={createLocaleUrl('/my-account')}>Dashboard</TransitionLink></li>
+                              <li><TransitionLink href={createLocaleUrl('/order-history')}>Order History</TransitionLink></li>
                             </>
                           ) : (
                             <>
-                              <li><Link href={createLocaleUrl('/register')}>{t('register')}</Link></li>
-                              <li className="active"><Link href={createLocaleUrl('/login')}>{t('login')}</Link></li>
+                              <li><TransitionLink href={createLocaleUrl('/register')}>{t('register')}</TransitionLink></li>
+                              <li className="active"><TransitionLink href={createLocaleUrl('/login')}>{t('login')}</TransitionLink></li>
                             </>
                           )}
                         </ul>
@@ -516,19 +530,19 @@ const Header = () => {
             <nav className="offcanvas-navigation">
               <ul className="mobile-menu">
                 <li className={`menu-item-has-children ${getActiveClass('/')}`}>
-                  <Link href={createLocaleUrl('/')} onClick={handleMobileMenuClose}><span className="close-menu mm-text">{t('home')}</span></Link>
+                  <TransitionLink href={createLocaleUrl('/')} onClick={handleMobileMenuClose}><span className="close-menu mm-text">{t('home')}</span></TransitionLink>
                 </li>
                 <li className={`menu-item-has-children ${getActiveClass('/shop')}`}>
-                  <Link href={createLocaleUrl('/shop')} onClick={handleMobileMenuClose}><span className="close-menu mm-text">{t('shop')}</span></Link>
+                  <TransitionLink href={createLocaleUrl('/shop')} onClick={handleMobileMenuClose}><span className="close-menu mm-text">{t('shop')}</span></TransitionLink>
                 </li>
                 <li className={`menu-item-has-children ${getActiveClass('/blog')}`}>
-                  <Link href={createLocaleUrl('/blog')} onClick={handleMobileMenuClose}><span className="close-menu mm-text">{t('blog')}</span></Link>
+                  <TransitionLink href={createLocaleUrl('/blog')} onClick={handleMobileMenuClose}><span className="close-menu mm-text">{t('blog')}</span></TransitionLink>
                 </li>
                 <li className={`menu-item-has-children ${getActiveClass('/about')}`}>
-                  <Link href={createLocaleUrl('/about')} onClick={handleMobileMenuClose}><span className="close-menu mm-text">{t('about')}</span></Link>
+                  <TransitionLink href={createLocaleUrl('/about')} onClick={handleMobileMenuClose}><span className="close-menu mm-text">{t('about')}</span></TransitionLink>
                 </li>
                 <li className={`menu-item-has-children ${getActiveClass('/contact')}`}>
-                  <Link href={createLocaleUrl('/contact')} onClick={handleMobileMenuClose}><span className="close-menu mm-text">{t('contact')}</span></Link>
+                  <TransitionLink href={createLocaleUrl('/contact')} onClick={handleMobileMenuClose}><span className="close-menu mm-text">{t('contact')}</span></TransitionLink>
                 </li>
               </ul>
             </nav>
