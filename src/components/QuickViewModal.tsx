@@ -260,26 +260,20 @@ const QuickViewModal: React.FC<QuickViewModalProps> = ({ isOpen, onClose, produc
                       <p>{product.description.replace(/<[^>]*>/g, '').substring(0, 200)}...</p>
                     </div>
                   )}
-                  <div className="quantity">
-                    <label>Quantity</label>
-                    <div className="cart-plus-minus">
-                      <input className="cart-plus-minus-box" value="1" type="text" readOnly />
-                      <div className="dec qtybutton"><i className="fa fa-angle-down"></i></div>
-                      <div className="inc qtybutton"><i className="fa fa-angle-up"></i></div>
-                    </div>
-                  </div>
+               
                   <div className="uren-group_btn">
                     <ul>
                       <li>
                         <a 
                           href="javascript:void(0)" 
                           className={`add-to_cart ${isInCart(product._id) ? 'added' : ''}`}
-                          onClick={(e) => {
-                            e.preventDefault();
-                            handleAddToCart();
-                          }}
+                          // onClick={(e) => {
+                          //   e.preventDefault();
+                          //   handleAddToCart();
+                          // }}
+                          onClick={handleClick}
                         >
-                          {isInCart(product._id) ? 'Added to Cart' : 'Add To Cart'}
+                          { isPending ? 'Loading...':'View Details'}
                         </a>
                       </li>
                       {/* <li>
