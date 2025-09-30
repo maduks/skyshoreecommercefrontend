@@ -1579,7 +1579,8 @@ button, .global-overlay, .quantity .cart-plus-minus > .qtybutton, .price-filter 
 
 @media (max-width: 767px) {
   .uren-slider_area.uren-slider_area-3 .main-slider .slider-content > p {
-    max-width: 70%;
+    max-width: 90%;
+    min-width: 90%;
   }
 }
 
@@ -1599,6 +1600,7 @@ button, .global-overlay, .quantity .cart-plus-minus > .qtybutton, .price-filter 
   min-height: 600px;
   position: relative;
   bottom: 30px;
+  top:10px
 }
 /* small screen mobile banner */
 @media (max-width: 767px) {
@@ -1661,6 +1663,7 @@ button, .global-overlay, .quantity .cart-plus-minus > .qtybutton, .price-filter 
   background-size: contain;
   position: relative;
   bottom: 30px;
+  top:10px;
   min-height: 600px;
 }
 

@@ -197,7 +197,13 @@
     $(".category-heading")
       .off("click")
       .on("click", function () {
-        $(".category-menu-list").slideToggle(900);
+        $(".category-menu-list").slideToggle(400);
+      });
+
+    $(".category-heading-item")
+      .off("click")
+      .on("click", function () {
+        $(".category-menu-list").slideToggle(400);
       });
     /*-- Category Menu Toggles --*/
     function categorySubMenuToggle() {

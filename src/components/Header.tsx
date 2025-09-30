@@ -3,11 +3,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { useRouter, usePathname } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { useCurrentLocale } from '@/hooks/useCurrentLocale';
 import { useAppSelector, useAppDispatch } from '@/store/hooks';
-import { Product } from '@/store/slices/productSlice';
+import { Product, fetchCategories } from '@/store/slices/productSlice';
 import { closeCart, openCart } from '@/store/slices/cartSlice';
 import CartIcon from './CartIcon';
 import SideCart from './SideCart';
@@ -21,7 +21,7 @@ const Header = () => {
   // const locale = useLocale();
   const currentLocale = useCurrentLocale();
   const dispatch = useAppDispatch();
-  const { products } = useAppSelector((state: any) => state.products);
+  const { products, categories } = useAppSelector((state: any) => state.products);
   const { isAuthenticated } = useAppSelector((state: any) => state.user);
   const { isOpen: isMiniCartOpen } = useAppSelector((state: any) => state.cart);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -139,6 +139,11 @@ const Header = () => {
     setIsMobileMenuOpen(false);
   };
 
+  // Fetch categories when component mounts
+  useEffect(() => {
+    dispatch(fetchCategories());
+  }, [dispatch]);
+
   // Close suggestions when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -198,10 +203,11 @@ const Header = () => {
                         <TransitionLink href={createLocaleUrl('/')}>{t('home')}</TransitionLink>
                       
                       </li>
-                      <li className={`megamenu-holder ${getActiveClass('/shop')}`}>
+                      {/* <li className={`megamenu-holder ${getActiveClass('/shop')}`}>
                         <TransitionLink href={createLocaleUrl('/shop')}>{t('shop')} </TransitionLink>
                      
-                      </li>
+                      </li> */}
+                      <li className={getActiveClass('/categories')}><TransitionLink href={createLocaleUrl('/categories')}>Categories</TransitionLink></li>
                     
                       <li className={getActiveClass('/about')}><TransitionLink href={createLocaleUrl('/about')}>{t('about')}</TransitionLink></li>
                       <li className={getActiveClass('/contact')}><TransitionLink href={createLocaleUrl('/contact')}>{t('contact')}</TransitionLink></li>
@@ -286,17 +292,18 @@ const Header = () => {
                   <nav className="main-nav">
                     <ul>
                       <li className={`dropdown-holder ${getActiveClass('/')}`}>
-                        <Link href={createLocaleUrl('/')}>{t('home')}</Link>
+                        <TransitionLink href={createLocaleUrl('/')}>{t('home')}</TransitionLink>
                       
                       </li>
                       <li className={`megamenu-holder ${getActiveClass('/shop')}`}>
-                        <Link href={createLocaleUrl('/shop')}>{t('shop')} </Link>
+                        <TransitionLink href={createLocaleUrl('/shop')}>{t('shop')} </TransitionLink>
                       
                       </li>
+                      <li className={getActiveClass('/categories')}><TransitionLink href={createLocaleUrl('/categories')}>Categories</TransitionLink></li>
                     
-                      <li className={getActiveClass('/about')}><Link href={createLocaleUrl('/about')}>{t('about')}</Link></li>
-                      <li className={getActiveClass('/contact')}><Link href={createLocaleUrl('/contact')}>{t('contact')}</Link></li>
-                      <li className={getActiveClass('/blog')}><Link href={createLocaleUrl('/blog')}>{t('blog')} </Link>
+                      <li className={getActiveClass('/about')}><TransitionLink href={createLocaleUrl('/about')}>{t('about')}</TransitionLink></li>
+                      <li className={getActiveClass('/contact')}><TransitionLink href={createLocaleUrl('/contact')}>{t('contact')}</TransitionLink></li>
+                      <li className={getActiveClass('/blog')}><TransitionLink href={createLocaleUrl('/blog')}>{t('blog')} </TransitionLink>
                     
                       </li>
                     </ul>
@@ -364,28 +371,25 @@ const Header = () => {
                     <h2 className="categories-toggle">
                       <span>Shop By</span>
                       <span>Category</span>
+                      
                     </h2>
                   </div>
                   <div id="cate-toggle" className="category-menu-list">
                     <ul>
-                      {/* <li className="right-menu">
-                        <Link href="/shop">Car Parts</Link>
-                        <ul className="cat-mega-menu">
-                          <li className="right-menu cat-mega-title">
-                            <Link href="/shop">Active body control</Link>
-                            <ul>
-                              <li><Link href="/shop">Aluminum Nonstick</Link></li>
-                              <li><Link href="/shop">Calphalon</Link></li>
-                              <li><Link href="/shop">Contemporary</Link></li>
-                              <li><Link href="/shop">Hard-Anodized</Link></li>
-                            </ul>
+                      {categories.length > 0 ? (
+                        categories.map((category: any) => (
+                          <li className="category-heading-item" key={category._id}>
+                            <TransitionLink href={createLocaleUrl(`/categories/${encodeURIComponent(category.name.toLowerCase().replace(/\s+/g, '-'))}`)}>
+                              {category.name}
+                            </TransitionLink>
                           </li>
-                        
-                        </ul>
-                      </li> */}
-                   
-                      <li><Link href={createLocaleUrl('/shop')}>Engine Oil </Link></li>
-                      <li><Link href={createLocaleUrl('/shop')}>Diesel Oil</Link></li>
+                        ))
+                      ) : (
+                        <>
+                          <li><TransitionLink href={createLocaleUrl('/categories')}>All Categories</TransitionLink></li>
+                          <li><TransitionLink href={createLocaleUrl('/categories')}>Loading...</TransitionLink></li>
+                        </>
+                      )}
                     </ul>
                   </div>
                 </div>
@@ -534,6 +538,9 @@ const Header = () => {
                 </li>
                 <li className={`menu-item-has-children ${getActiveClass('/shop')}`}>
                   <TransitionLink href={createLocaleUrl('/shop')} onClick={handleMobileMenuClose}><span className="close-menu mm-text">{t('shop')}</span></TransitionLink>
+                </li>
+                <li className={`menu-item-has-children ${getActiveClass('/categories')}`}>
+                  <TransitionLink href={createLocaleUrl('/categories')} onClick={handleMobileMenuClose}><span className="close-menu mm-text">Categories</span></TransitionLink>
                 </li>
                 <li className={`menu-item-has-children ${getActiveClass('/blog')}`}>
                   <TransitionLink href={createLocaleUrl('/blog')} onClick={handleMobileMenuClose}><span className="close-menu mm-text">{t('blog')}</span></TransitionLink>
