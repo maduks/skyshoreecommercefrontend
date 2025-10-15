@@ -11,19 +11,27 @@ import DealOfTheDaySmall from '@/components/DealOfTheDaySmall';
 import NewArrivalSmall from '@/components/NewArrivalSmall';
 import PopularSearch from '@/components/PopularSearch';
 import BlogSection from '@/components/BlogSection';
+import AboutBrand from '@/components/AboutBrand';
+import CatalogCategoriesSlider from '@/components/CatalogCategoriesSlider';
+import HomeCTASection from '@/components/HomeCTASection';
 
 export default function Home() {
   const t = useTranslations('pages.home');
   return (
     <>
       <HeroSlider />
-      <NewArrivals />
-      <NewArrivalSmall />
-      <ShippingInfo />
+      <AboutBrand />
+      <CatalogCategoriesSlider />
+      
+      {/* <NewArrivals />
+      <NewArrivalSmall /> */}
+    
       {/* <FeaturedCategories /> */}
       <BannerSection />
-      <DealOfTheDay />
-      <DealOfTheDaySmall />
+      <ShippingInfo />
+      <HomeCTASection />
+      {/* <DealOfTheDay />
+      <DealOfTheDaySmall /> */}
       
       <PopularSearch />
       <BlogSection />

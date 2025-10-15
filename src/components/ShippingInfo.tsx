@@ -6,7 +6,7 @@ import React from 'react';
 const ShippingInfo = () => {
   const t = useTranslations('pages.home');
   return (
-    <div style={{position: 'relative', bottom: '40px'}} className="uren-shipping_area">
+    <div style={{position: 'relative', bottom: '40px', }} className="uren-shipping_area">
       <div className="container-fluid">
         <div className="shipping-nav">
           <div className="row no-gutters">

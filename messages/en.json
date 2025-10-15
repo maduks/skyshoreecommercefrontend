@@ -183,6 +183,12 @@
       "recentPosts": "Recent Posts",
       "searchPosts": "Search posts..."
     },
+    "distributor": {
+      "title": "Want to be a distributor?",
+      "description": "Join our network of trusted partners and grow your business with Skyshore Lubricants. Our sales team is ready to help you get started with competitive pricing, marketing support, and comprehensive training programs.",
+      "contactSales": "Contact Sales Team",
+      "learnMore": "Learn More"
+    },
     "login": {
       "title": "Login",
       "breadcrumb": "Login",
@@ -275,8 +281,8 @@
       "return90Days": "Return 90 Days",
       "return90DaysDescription": "If goods have problems",
 
-      "securePayment": "Secure Payment",
-      "securePaymentDescription": "We ensure secure payment",
+      "securePayment": "Secure Transactions",
+      "securePaymentDescription": "We ensure secure transactions",
       "moneyBack": "Money Back Guarantee",
       "moneyBackDescription": "You have 30 days to Return",
 
@@ -293,7 +299,7 @@
       "close": "Close",
       "testimonials": "What Our Customers Say",
       "brands": "Our Trusted Brands",
-      "categories": "Shop by Category",
+      "categories": "Filter by Category",
       "electronics": "Electronics",
       "fashion": "Fashion",
       "homeGarden": "Home & Garden",

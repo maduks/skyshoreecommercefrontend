@@ -552,15 +552,19 @@
     /*-------------------------------------------------*/
     /* Uren's Sticky Sidebar
 /*-------------------------------------------------*/
-    $("#sticky-sidebar").theiaStickySidebar({
-      // Settings
-      additionalMarginTop: 80,
-    });
+    if ($.fn.theiaStickySidebar && $("#sticky-sidebar").length) {
+      $("#sticky-sidebar").theiaStickySidebar({
+        // Settings
+        additionalMarginTop: 80,
+      });
+    }
 
     /*-------------------------------------------------*/
     /* Uren's Bootstraps 4 Tooltip
 /*-------------------------------------------------*/
-    $('[data-toggle="tooltip"]').tooltip();
+    if ($.fn.tooltip && $('[data-toggle="tooltip"]').length) {
+      $('[data-toggle="tooltip"]').tooltip();
+    }
 
     /*--------------------------------
     Price Slider Active

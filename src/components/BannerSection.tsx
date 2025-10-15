@@ -17,8 +17,8 @@ const BannerSection = () => {
     <div style={{position: 'relative', bottom: '40px'}} className="uren-banner_area">
       <div className="container-fluid">
         <div className="row">
-          <div className="col-lg-6 col-md-6 col-sm-12">
-            <div className="banner-item img-hover_effect">
+          <div  className="col-lg-6 col-md-6 col-sm-12">
+            <div  className="banner-item img-hover_effect">
               <ImageLoader 
                 src="/assets/images/banner/1-1.png"
                 className="banner-img-1"
@@ -29,7 +29,7 @@ const BannerSection = () => {
                 <h3>SUV&apos;S</h3>
                 <p>Don&apos;t risk the performance of your luxury car with inferior oil. Ensure your engine runs smoothly and efficiently with our premium engine oil.</p>
                 <div className="uren-btn-ps_left">
-                  <Link className="uren-btn" href={createLocaleUrl('/shop')}>Shop Now</Link>
+                  <Link className="uren-btn" href={createLocaleUrl('/catalog')}>Catalog</Link>
                 </div>
               </div>
             </div>

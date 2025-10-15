@@ -7159,6 +7159,7 @@ button, .global-overlay, .quantity .cart-plus-minus > .qtybutton, .price-filter 
 
 .shop-product-wrap.grid .product-slide_item .inner-slide .single-product {
   border: 1px solid #e5e5e5;
+  border-radius: 15px;
   margin-top: 30px;
 }
 

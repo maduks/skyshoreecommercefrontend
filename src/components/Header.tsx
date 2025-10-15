@@ -369,7 +369,7 @@ const Header = () => {
                 <div className="category-menu category-menu-hidden">
                   <div className="category-heading">
                     <h2 className="categories-toggle">
-                      <span>Shop By</span>
+                      <span>Filter By</span>
                       <span>Category</span>
                       
                     </h2>

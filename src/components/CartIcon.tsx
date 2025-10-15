@@ -11,7 +11,6 @@ const CartIcon: React.FC<CartIconProps> = ({ onClick }) => {
   const { totalQuantity, totalAmount } = useAppSelector((state) => state.cart);
 
   // Debug logging
-  console.log('CartIcon - Cart State:', { totalQuantity, totalAmount });
 
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat('en-NG', {

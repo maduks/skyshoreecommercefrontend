@@ -183,6 +183,12 @@
       "recentPosts": "Publicaciones Recientes",
       "searchPosts": "Buscar publicaciones..."
     },
+    "distributor": {
+      "title": "¿Quieres ser distribuidor?",
+      "description": "Únete a nuestra red de socios de confianza y haz crecer tu negocio con Skyshore Lubricants. Nuestro equipo de ventas está listo para ayudarte a comenzar con precios competitivos, soporte de marketing y programas de capacitación integrales.",
+      "contactSales": "Contactar Equipo de Ventas",
+      "learnMore": "Saber Más"
+    },
     "login": {
       "title": "Iniciar Sesión",
       "breadcrumb": "Iniciar Sesión",

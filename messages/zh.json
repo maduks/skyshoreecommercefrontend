@@ -183,6 +183,12 @@
       "recentPosts": "最新文章",
       "searchPosts": "搜索文章..."
     },
+    "distributor": {
+      "title": "想成为经销商吗？",
+      "description": "加入我们值得信赖的合作伙伴网络，与天岸润滑油一起发展您的业务。我们的销售团队随时准备帮助您开始，提供有竞争力的价格、营销支持和全面的培训计划。",
+      "contactSales": "联系销售团队",
+      "learnMore": "了解更多"
+    },
     "login": {
       "title": "登录",
       "breadcrumb": "登录",
