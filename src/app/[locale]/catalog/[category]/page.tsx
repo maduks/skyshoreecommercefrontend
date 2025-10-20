@@ -118,31 +118,18 @@ const CategoryPage = ({ params }: CategoryPageProps) => {
     }
   }, [categories, resolvedParams]);
 
-  // Filter products by selected category
+  // Filter products by selected category (show all products in category regardless of variation count)
   useEffect(() => {
-    const hasSingleVariationOption = (product: any): boolean => {
-      const variations = product?.variations;
-      if (!Array.isArray(variations) || variations.length === 0) return false;
-      return variations.some((variation: any) => {
-        const options = variation?.options;
-        if (!Array.isArray(options) || options.length !== 1) return false;
-        const value = options[0]?.value;
-        return typeof value === 'string' && value.toLowerCase() === 'single';
-      });
-    };
-
     if (selectedCategory) {
       const filtered = products.filter((product: any) => {
-        console.log(product.category._id, "selected category",selectedCategory);
-        const productCategoryId = typeof product.category._id === 'string' 
-          ? product.category._id 
+        const productCategoryId = typeof product.category._id === 'string'
+          ? product.category._id
           : product.category._id.$oid;
-        const inCategory = productCategoryId === selectedCategory;
-        return inCategory && hasSingleVariationOption(product);
+        return productCategoryId === selectedCategory;
       });
       setFilteredProducts(filtered);
     } else {
-      setFilteredProducts(products.filter(hasSingleVariationOption));
+      setFilteredProducts(products);
     }
   }, [products, selectedCategory]);
 

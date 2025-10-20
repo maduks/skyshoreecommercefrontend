@@ -25,63 +25,77 @@ const CatalogCategoriesSlider = () => {
   const currentLocale = useCurrentLocale();
   const createLocaleUrl = (path: string) => `/${currentLocale}${path}`;
 
-  // Ensure slick re-initializes safely on back/forward navigation
+  // Force slider re-initialization on back navigation to prevent scattered layout
   React.useEffect(() => {
     if (typeof window === 'undefined') return;
-    type JQ = {
-      fn?: { slick?: unknown };
-      (selector: string): {
-        length: number;
-        hasClass: (cls: string) => boolean;
-        slick: (cmdOrOptions?: string | Record<string, unknown>) => void;
-        removeClass: (cls: string) => void;
-        find: (sel: string) => { children: () => { unwrap: () => void }; remove: () => void };
-        data: (key: string) => string;
-      };
+    
+    const reinitializeSlider = () => {
+      // Use a more direct approach - force DOM cleanup and reinit
+      const sliderElement = document.querySelector('.uren-slick-slider');
+      if (!sliderElement) return;
+      
+      // Remove all slick-related classes and DOM modifications
+      sliderElement.classList.remove('slick-initialized', 'slick-slider');
+      
+      // Remove slick-generated DOM elements
+      const slickTrack = sliderElement.querySelector('.slick-track');
+      const slickList = sliderElement.querySelector('.slick-list');
+      const slickArrows = sliderElement.querySelectorAll('.slick-arrow');
+      const slickDots = sliderElement.querySelectorAll('.slick-dots');
+      
+      if (slickTrack) {
+        // Unwrap all slides from slick-track
+        const slides = slickTrack.children;
+        while (slides.length > 0) {
+          const slide = slides[0];
+          const parent = slide.parentNode;
+          if (parent && parent !== sliderElement) {
+            parent.parentNode?.insertBefore(slide, parent);
+            parent.remove();
+          } else {
+            break;
+          }
+        }
+      }
+      
+      // Remove slick-generated elements
+      [slickList, ...slickArrows, ...slickDots].forEach(el => el?.remove());
+      
+      // Force a reflow to ensure DOM is clean
+      sliderElement.offsetHeight;
+      
+      // Re-trigger main.js initialization after a short delay
+      setTimeout(() => {
+        if (typeof (window as any).mainJsInit === 'function') {
+          (window as any).mainJsInit();
+        }
+      }, 100);
     };
-    const w = window as unknown as { jQuery?: JQ };
-    const jQueryMaybe = w.jQuery;
-    if (!jQueryMaybe || !jQueryMaybe.fn || !jQueryMaybe.fn.slick) return;
-
-    const $ = jQueryMaybe as unknown as (selector: string) => ReturnType<JQ>;
-    const $slider = $('.uren-slick-slider');
-
-    // If slick left residual classes, clean them before main.js runs
-    if ($slider.length && $slider.hasClass('slick-initialized')) {
-      try {
-        $slider.slick('unslick');
-      } catch {}
-      $slider.removeClass('slick-initialized slick-slider');
-      $slider.find('.slick-track, .slick-list').children().unwrap();
-      $slider.find('.slick-arrow, .slick-dots').remove();
-    }
-
-    // Proactively re-init here using data-slick-options, similar to other sliders
-    try {
-      const rawOptions = $slider.data('slick-options') as unknown;
-      let options: Record<string, unknown> | undefined;
-      if (typeof rawOptions === 'string') {
-        try {
-          options = JSON.parse(rawOptions) as Record<string, unknown>;
-        } catch {
-          options = undefined;
-        }
-      } else if (rawOptions && typeof rawOptions === 'object') {
-        options = rawOptions as Record<string, unknown>;
+    
+    // Run on mount
+    reinitializeSlider();
+    
+    // Handle back navigation (bfcache restore)
+    const handlePageShow = (e: PageTransitionEvent) => {
+      if ((e as any).persisted) {
+        setTimeout(reinitializeSlider, 50);
       }
-
-      if ($slider.length && !$slider.hasClass('slick-initialized') && options) {
-        // Ensure arrows config exists so icons render instead of default text
-        if (options.arrows === undefined) options.arrows = true;
-        if (options.prevArrow === undefined) {
-          options.prevArrow = { buttonClass: 'slick-prev slick-btn', iconClass: 'ion-ios-arrow-back' } as unknown as Record<string, unknown>;
-        }
-        if (options.nextArrow === undefined) {
-          options.nextArrow = { buttonClass: 'slick-next slick-btn', iconClass: 'ion-ios-arrow-forward' } as unknown as Record<string, unknown>;
-        }
-        $slider.slick(options);
+    };
+    
+    // Handle visibility change (mobile back button)
+    const handleVisibilityChange = () => {
+      if (!document.hidden) {
+        setTimeout(reinitializeSlider, 50);
       }
-    } catch {}
+    };
+    
+    window.addEventListener('pageshow', handlePageShow);
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    
+    return () => {
+      window.removeEventListener('pageshow', handlePageShow);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
   }, []);
 
   return (
@@ -109,7 +123,23 @@ const CatalogCategoriesSlider = () => {
                     priority
                   />
                 </div>
-                <Link href={createLocaleUrl(item.href)} className="category-card-cta" aria-label={`Explore ${item.title}`}>
+                <Link 
+                  href={createLocaleUrl(item.href)} 
+                  className="category-card-cta" 
+                  aria-label={`Explore ${item.title}`}
+                  onClick={() => {
+                    // Auto-close any open dropdowns when series is selected
+                    if (typeof window !== 'undefined' && (window as any).jQuery) {
+                      const $ = (window as any).jQuery;
+                      // Close any open dropdowns
+                      $('.dropdown-menu').removeClass('show');
+                      $('.dropdown-toggle').attr('aria-expanded', 'false');
+                      // Close any mobile menu if open
+                      $('.mobile-menu').removeClass('active');
+                      $('.mobile-menu-toggle').removeClass('active');
+                    }
+                  }}
+                >
                   <span className="cta-arrow">→</span>
                 </Link>
               </div>

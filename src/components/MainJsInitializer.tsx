@@ -7,9 +7,12 @@ const MainJsInitializer = () => {
   const initialized = useRef(false);
 
   useEffect(() => {
+    // Reset initialization flag on every navigation
+    initialized.current = false;
+    
     // Wait for React to finish rendering
     const timer = setTimeout(() => {
-      if (typeof window !== 'undefined' && (window as any).jQuery && !initialized.current) {
+      if (typeof window !== 'undefined' && (window as any).jQuery) {
         try {
           // Store the original slick function
           if ((window as any).jQuery.fn.slick && !(window as any).jQuery.fn._originalSlick) {
@@ -48,7 +51,7 @@ const MainJsInitializer = () => {
         (window as any).jQuery.fn.slick = (window as any).jQuery.fn._originalSlick;
       }
     };
-  }, []);
+  }, []); // Remove dependencies to reinitialize on every render
 
   return null;
 };

@@ -6,7 +6,7 @@ interface ScriptLoaderOptions {
   dependencies?: string[];
 }
 
-// Global flag to prevent multiple slider initializations
+// Global flag to prevent multiple slider initializations - reset on every request
 let slidersInitialized = false;
 
 export const useScriptLoader = (options: ScriptLoaderOptions = {}) => {
@@ -15,17 +15,11 @@ export const useScriptLoader = (options: ScriptLoaderOptions = {}) => {
 
   const loadScript = (src: string): Promise<void> => {
     return new Promise((resolve, reject) => {
-      // Check if script is already loaded
-      if (loadedScripts.current.has(src)) {
-        resolve();
-        return;
-      }
-
+      // Force reload scripts on every request - remove existing scripts first
       const existingScript = document.querySelector(`script[src="${src}"]`);
       if (existingScript) {
-        loadedScripts.current.add(src);
-        resolve();
-        return;
+        existingScript.remove();
+        loadedScripts.current.delete(src);
       }
 
       const script = document.createElement('script');
@@ -453,6 +447,9 @@ export const useScriptLoader = (options: ScriptLoaderOptions = {}) => {
   }, []);
 
   useEffect(() => {
+    // Reset initialization flags on every request
+    slidersInitialized = false;
+    
     const scripts = [
       '/assets/js/vendor/jquery-1.12.4.min.js',
       '/assets/js/vendor/modernizr-2.8.3.min.js',

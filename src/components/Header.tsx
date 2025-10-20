@@ -14,6 +14,7 @@ import SideCart from './SideCart';
 import LanguageSwitcher from './LanguageSwitcher';
 import TransitionLink from './TransitionLink';
 import { useNavigationTransition } from '@/hooks/useNavigationTransition';
+import { useScriptLoader } from '@/hooks/useScriptLoader';
 
 const Header = () => {
   const pathname = usePathname();
@@ -137,6 +138,108 @@ const Header = () => {
   // Handle mobile menu close when navigation link is clicked
   const handleMobileMenuClose = () => {
     setIsMobileMenuOpen(false);
+  };
+
+  // Load scripts for header functionality
+  useScriptLoader({
+    dependencies: [categories],
+    onLoad: () => {
+      console.log('Scripts loaded successfully for header');
+      // Initialize header specific functionality
+      initializeHeader();
+      // Initialize category dropdown functionality
+      initializeCategoryDropdown();
+    },
+    onError: (error) => {
+      console.error('Error loading scripts:', error);
+    }
+  });
+
+  // Initialize header functionality
+  const initializeHeader = () => {
+    if (typeof window !== 'undefined' && (window as any).jQuery) {
+      const $ = (window as any).jQuery;
+      
+      // Initialize nice select
+      if ($.fn.niceSelect) {
+        $('.nice-select').niceSelect();
+      }
+      
+      // Initialize tooltips
+      if ($.fn.tooltip) {
+        $('[data-toggle="tooltip"]').tooltip();
+      }
+    }
+  };
+
+  // Initialize category dropdown functionality
+  const initializeCategoryDropdown = () => {
+    if (typeof window !== 'undefined' && (window as any).jQuery) {
+      const $ = (window as any).jQuery;
+      
+      // Initialize category heading toggle
+      $(".category-heading")
+        .off("click")
+        .on("click", function () {
+          $(".category-menu-list").slideToggle(400);
+        });
+
+      $(".category-heading-item")
+        .off("click")
+        .on("click", function () {
+          $(".category-menu-list").slideToggle(400);
+        });
+
+      // Initialize category sub menu toggle
+      function categorySubMenuToggle() {
+        const screenSize = $(window).width();
+        if (screenSize && screenSize <= 991) {
+          $("#cate-toggle .right-menu > a").prepend(
+            '<i class="expand menu-expand"></i>'
+          );
+          $(".category-menu .right-menu ul").slideUp();
+        } else {
+          $(".category-menu .right-menu > a i").remove();
+          $(".category-menu .right-menu ul").slideDown();
+        }
+      }
+      categorySubMenuToggle();
+      $(window).off("resize").on("resize", categorySubMenuToggle);
+
+      // Initialize category menu hide/show
+      function categoryMenuHide() {
+        const screenSize = $(window).width();
+        if (screenSize && screenSize <= 991) {
+          $(".category-menu-list").hide();
+        } else {
+          $(".category-menu-list").show();
+        }
+      }
+      categoryMenuHide();
+
+      // Hide category menu list initially
+      $(".category-menu-hidden").find(".category-menu-list").hide();
+      
+      // Initialize category menu list clicks
+      $(".category-menu-list")
+        .off("click")
+        .on("click", "li a, li a .menu-expand", function (this: HTMLElement) {
+          const $a = $(this).hasClass("menu-expand") ? $(this).parent() : $(this);
+          $(this).toggleClass("active");
+          if ($a.parent().hasClass("right-menu")) {
+            if ($a.attr("href") === "#" || $(this).hasClass("menu-expand")) {
+              if ($a.siblings("ul:visible").length > 0)
+                $a.siblings("ul").slideUp();
+              else {
+                $(this).parents("li").siblings("li").find("ul:visible").slideUp();
+                $a.siblings("ul").slideDown();
+              }
+            }
+          }
+        });
+
+      console.log('Category dropdown functionality initialized');
+    }
   };
 
   // Fetch categories when component mounts
@@ -379,7 +482,7 @@ const Header = () => {
                       {categories.length > 0 ? (
                         categories.map((category: any) => (
                           <li className="category-heading-item" key={category._id}>
-                            <TransitionLink href={createLocaleUrl(`/categories/${encodeURIComponent(category.name.toLowerCase().replace(/\s+/g, '-'))}`)}>
+                            <TransitionLink href={createLocaleUrl(`/catalog/${encodeURIComponent(category.name.toLowerCase().replace(/\s+/g, '-'))}`)}>
                               {category.name}
                             </TransitionLink>
                           </li>
