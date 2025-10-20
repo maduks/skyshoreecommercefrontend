@@ -4,6 +4,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useCurrentLocale } from '@/hooks/useCurrentLocale';
 
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 type SeriesKey = 'sigma' | 'apex' | 'spark' | 'sintec' | 'sae';
 
 const SERIES: Array<{
@@ -51,7 +53,9 @@ const CatalogCategoriesSlider = () => {
           const parent = slide.parentNode;
           if (parent && parent !== sliderElement) {
             parent.parentNode?.insertBefore(slide, parent);
-            parent.remove();
+            if (parent.parentNode) {
+              parent.parentNode.removeChild(parent);
+            }
           } else {
             break;
           }
@@ -59,10 +63,14 @@ const CatalogCategoriesSlider = () => {
       }
       
       // Remove slick-generated elements
-      [slickList, ...slickArrows, ...slickDots].forEach(el => el?.remove());
+      [slickList, ...slickArrows, ...slickDots].forEach(el => {
+        if (el && el.parentNode) {
+          el.parentNode.removeChild(el);
+        }
+      });
       
       // Force a reflow to ensure DOM is clean
-      sliderElement.offsetHeight;
+      void (sliderElement as HTMLElement).offsetHeight;
       
       // Re-trigger main.js initialization after a short delay
       setTimeout(() => {
@@ -77,6 +85,7 @@ const CatalogCategoriesSlider = () => {
     
     // Handle back navigation (bfcache restore)
     const handlePageShow = (e: PageTransitionEvent) => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       if ((e as any).persisted) {
         setTimeout(reinitializeSlider, 50);
       }

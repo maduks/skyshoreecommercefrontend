@@ -8,8 +8,8 @@ import { useCurrentLocale } from '@/hooks/useCurrentLocale';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { fetchProducts, fetchCategories, setViewMode, Category } from '@/store/slices/productSlice';
 import { addToCart } from '@/store/slices/cartSlice';
-import { addToWishlist } from '@/store/slices/wishlistSlice';
-import { addToCompare } from '@/store/slices/compareSlice';
+// import { addToWishlist } from '@/store/slices/wishlistSlice';
+// import { addToCompare } from '@/store/slices/compareSlice';
 import { useScriptLoader } from '@/hooks/useScriptLoader';
 import ApiStatusIndicator from '@/components/ApiStatusIndicator';
 import { useQuickView } from '@/components/QuickViewProvider';
@@ -177,27 +177,27 @@ const CategoryPage = ({ params }: CategoryPageProps) => {
     return stars;
   };
 
-  const handleAddToCart = (product: any) => {
-    dispatch(addToCart({
-      _id: product._id,
-      name: product.name,
-      price: product.price,
-      salePrice: product.salePrice,
-      images: product.images,
-      category: product.category,
-      sku: product.sku,
-      brand: product.brand,
-      stock: product.stock,
-      quantity: 1
-    }));
+  // const handleAddToCart = (product: any) => {
+  //   dispatch(addToCart({
+  //     _id: product._id,
+  //     name: product.name,
+  //     price: product.price,
+  //     salePrice: product.salePrice,
+  //     images: product.images,
+  //     category: product.category,
+  //     sku: product.sku,
+  //     brand: product.brand,
+  //     stock: product.stock,
+  //     quantity: 1
+  //   }));
 
-    // Show notification
-    setNotification({
-      message: `${product.name} has been added to cart!`,
-      type: 'success',
-      isVisible: true,
-    });
-  };
+  //   // Show notification
+  //   setNotification({
+  //     message: `${product.name} has been added to cart!`,
+  //     type: 'success',
+  //     isVisible: true,
+  //   });
+  // };
 
   const handleViewModeChange = (mode: 'gridview-2' | 'gridview-3' | 'gridview-4' | 'gridview-5' | 'listview') => {
     console.log('Changing view mode to:', mode);
@@ -217,13 +217,13 @@ const CategoryPage = ({ params }: CategoryPageProps) => {
     return false;
   };
 
-  const handleCategorySelect = (categoryId: string) => {
-    setSelectedCategory(categoryId);
-  };
+  // const handleCategorySelect = (categoryId: string) => {
+  //   setSelectedCategory(categoryId);
+  // };
 
-  const isInCart = (productId: string) => {
-    return cartItems.some((item: any) => item._id === productId);
-  };
+  // const isInCart = (productId: string) => {
+  //   return cartItems.some((item: any) => item._id === productId);
+  // };
 
   const closeNotification = () => {
     setNotification(prev => ({ ...prev, isVisible: false }));
